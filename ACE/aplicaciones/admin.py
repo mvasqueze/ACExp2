@@ -1,3 +1,4 @@
+
 from django.contrib import admin
 
 from aplicaciones.models import Curso, Profe, Grupos, Grupo_estudiantes, Estudiante, Banco_preguntas,Pregunta
@@ -9,3 +10,4 @@ admin.site.register(Grupo_estudiantes)
 admin.site.register(Grupos)
 admin.site.register(Estudiante)
 admin.site.register(Banco_preguntas)
+
