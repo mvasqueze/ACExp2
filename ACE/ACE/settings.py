@@ -55,7 +55,7 @@ ROOT_URLCONF = 'ACE.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ['C:/Users/mavae/Desktop/ACExp2/ACExp2/ACE/aplicaciones/Plantillas'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
