@@ -1,1 +1,13 @@
 <!-- Lista de estudiantes de un grupo -->
+{%  block content %}
+
+    <h1>Estudiantes:</h1>
+   
+{% for estudiante in estudiante_lista %}
+ <ul>
+ 
+<b>Nombre:</b> {{estudiante.nombre}}  <b>DNI:</b>{{estudiante.dni}}
+</ul>
+{% endfor %}
+
+{% endblock %}
