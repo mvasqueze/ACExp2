@@ -43,13 +43,10 @@ class Plantilla(models.Model):
     dni=models.CharField(max_length=10,primary_key=True)
     nombre = models.CharField(max_length=50)
     id_banco=models.ForeignKey(Banco_preguntas,null=False, on_delete=models.CASCADE)
-<<<<<<< HEAD
-=======
     enunciado=models.CharField(max_length=500)
     def __str__(self):
         texto = "Pregunta: {0}"
         return texto.format(self.nombre)
->>>>>>> afafa7c59707d070aebc91022b69b7fea7807c21
 
 
 class Correcta (models.Model):

@@ -55,11 +55,7 @@ ROOT_URLCONF = 'ACE.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-<<<<<<< HEAD
         'DIRS': ['C:/Users/chris/Desktop/Universidad/Semestre4/ProyectoIntegrador/ACExp2/ACE/aplicaciones/Plantillas'],
-=======
-        'DIRS': ['C:/Users/echev/Desktop/testeos/ACExp2/ACE/aplicaciones/Plantillas'],
->>>>>>> afafa7c59707d070aebc91022b69b7fea7807c21
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
