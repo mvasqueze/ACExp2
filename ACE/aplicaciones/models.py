@@ -10,10 +10,17 @@ class Profe (models.Model):
         texto = "Profe: {0}"
         return texto.format(self.nombre)
     
-    def setDNI(self):
+    def getDNI(self):
         return self.dni
     
-    def
+    def getNombre(self):
+        return self.nombre
+
+    def getDNI(self, nombre):
+        self.nombre=nombre
+    
+    def getDNI(self, dni):
+        self.dni=dni
 
 
 class Curso(models.Model):
@@ -23,6 +30,21 @@ class Curso(models.Model):
     def __str__(self):
         texto = "Curso: {0}"
         return texto.format(self.nombre)
+    
+    def setDNI(self, dni):
+        self.dni=dni
+    
+    def setNombre(self, nombre):
+        self.nombre=nombre
+
+    def getDNI(self):
+        return self.dni
+
+    def getNombre(self):
+        return self.nombre
+
+    def getProfe(self):
+        return self.profe
 
 
 
