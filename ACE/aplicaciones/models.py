@@ -54,7 +54,6 @@ class Grupos(models.Model):
     dni=models.CharField(max_length=10,primary_key=True)
     nombre = models.CharField(max_length=50)
     curso= models.ForeignKey(Curso,null=False, on_delete=models.CASCADE)
-<<<<<<< HEAD
     def __str__(self):
         texto = "Grupo: {0}"
         return texto.format(self.nombre)
@@ -76,15 +75,11 @@ class Grupos(models.Model):
     
     def setCurso(self, curso):
         self.curso = curso
-=======
-
->>>>>>> df741ff67bc5d51143b3a26694ec2eab19f613d5
 
 
 class Estudiante(models.Model):
     dni=models.CharField(max_length=10,primary_key=True)
-    nombre = models.CharField(max_length=50)
-<<<<<<< HEAD
+    nombre = models.CharField(max_length=50)\
     def __str__(self):
         texto = "Estudiante: {0}"
         return texto.format(self.nombre)
@@ -100,8 +95,6 @@ class Estudiante(models.Model):
 
     def setNombre(self, nombre):
         self.nombre = nombre
-=======
->>>>>>> df741ff67bc5d51143b3a26694ec2eab19f613d5
 
 
 class Grupo_estudiantes(models.Model):
@@ -193,9 +186,6 @@ class Correcta (models.Model):
 class Incorrecta (models.Model):
     id_pregunta=models.ForeignKey(Plantilla,null=False, on_delete=models.CASCADE)
     respuesta_equivocada=models.CharField(max_length=50)
-
-<<<<<<< HEAD
-=======
     def getid_pregunta(self):
         return self.id_pregunta
 
@@ -204,4 +194,3 @@ class Incorrecta (models.Model):
 
     def setrespuesta_incorrecta(self, respuesta_incorrecta):
         self.respuesta_equivocada=respuesta_incorrecta
->>>>>>> df741ff67bc5d51143b3a26694ec2eab19f613d5
