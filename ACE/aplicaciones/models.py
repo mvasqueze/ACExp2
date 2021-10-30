@@ -12,11 +12,41 @@ class Profe (models.Model):
         return texto.format(self.nombre)
     
    
+    def getDNI(self):
+        return self.dni
+    
+    def getNombre(self):
+        return self.nombre
+
+    def getDNI(self, nombre):
+        self.nombre=nombre
+    
+    def getDNI(self, dni):
+        self.dni=dni
+
 
 class Curso(models.Model):
     dni=models.CharField(max_length=10,primary_key=True)
     nombre = models.CharField(max_length=50)
     profe= models.ForeignKey(Profe,null=False,on_delete=models.CASCADE)
+    def __str__(self):
+        texto = "Curso: {0}"
+        return texto.format(self.nombre)
+    
+    def setDNI(self, dni):
+        self.dni=dni
+    
+    def setNombre(self, nombre):
+        self.nombre=nombre
+
+    def getDNI(self):
+        return self.dni
+
+    def getNombre(self):
+        return self.nombre
+
+    def getProfe(self):
+        return self.profe
 
 
 
