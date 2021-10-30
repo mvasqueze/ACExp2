@@ -6,12 +6,18 @@ from django.db.models.fields.related import ForeignKey
 class Profe (models.Model):
     dni=models.CharField(max_length=10,primary_key=True)
     nombre = models.CharField(max_length=50)
+    def __str__(self):
+        texto = "Profe: {0}"
+        return texto.format(self.nombre)
 
 
 class Curso(models.Model):
     dni=models.CharField(max_length=10,primary_key=True)
     nombre = models.CharField(max_length=50)
     profe= models.ForeignKey(Profe,null=False,on_delete=models.CASCADE)
+    def __str__(self):
+        texto = "Curso: {0}"
+        return texto.format(self.nombre)
 
 
 
@@ -19,12 +25,18 @@ class Grupos(models.Model):
     dni=models.CharField(max_length=10,primary_key=True)
     nombre = models.CharField(max_length=50)
     curso= models.ForeignKey(Curso,null=False, on_delete=models.CASCADE)
+    def __str__(self):
+        texto = "Grupo: {0}"
+        return texto.format(self.nombre)
 
 
 
 class Estudiante(models.Model):
     dni=models.CharField(max_length=10,primary_key=True)
     nombre = models.CharField(max_length=50)
+    def __str__(self):
+        texto = "Estudiante: {0}"
+        return texto.format(self.nombre)
 
 
 class Grupo_estudiantes(models.Model):
@@ -37,6 +49,9 @@ class Banco_preguntas(models.Model):
     dni=models.CharField(max_length=10,primary_key=True)
     nombre = models.CharField(max_length=50)
     curso= models.ForeignKey(Curso,null=False, on_delete=models.CASCADE)
+    def __str__(self):
+        texto = "Banco de preguntas: {0}"
+        return texto.format(self.nombre)
 
 
 class Plantilla(models.Model):
