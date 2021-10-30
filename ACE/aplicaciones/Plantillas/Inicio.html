@@ -5,13 +5,15 @@
     </head>
     <body>
         <h1> ¡Bienvenido, docente! </h1>
-            <a href="crearCurso/">
+            <a href="/crearCurso/">
                 <input type="button" value="Crear curso"/>
             </a>
-            <a href="cursos/">
+            <a href="/cursos/">
                 <input type="button" value="Ver cursos"/>
             </a>
-            <input type="button" value="Salir" onclick="window.close()"/>
+            <a href="{% url 'logout' %}">
+                <input type="button" value="Salir"/>
+            </a>
         </form>
     </body>
 </html>
