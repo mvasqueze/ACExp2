@@ -17,19 +17,18 @@ from django.contrib import admin
 from django.urls import path
 from aplicaciones.views import *
 from django.urls.conf import include
-from aplicaciones.views import estudiantes
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('inicio/', admin.site.urls),
-    path('cursos/', admin.site.urls),
-    path('crearCurso/', admin.site.urls),
-    path('bancos/', admin.site.urls),
-    path('crearBanco/', admin.site.urls),
-    path('grupos/', admin.site.urls),
-    path('crearGrupo/', admin.site.urls),
-    path('plantillas/', admin.site.urls),
-    path('crearPlantilla/', admin.site.urls),
+    path('inicio/', inicio),
+    path('cursos/', verCurso),
+    path('crearCurso/', crearCurso),
+    path('bancos/', verBanco),
+    path('crearBanco/', crearBanco),
+    path('grupos/', verGrupo),
+    path('crearGrupo/', crearGrupo),
+    path('plantillas/', verPlantilla),
+    path('crearPlantilla/', crearPlantilla),
     path('estudiantes/', estudiantes),
     path('accounts/',include('django.contrib.auth.urls')),
 ]
