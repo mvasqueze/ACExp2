@@ -79,7 +79,8 @@ class Grupos(models.Model):
 
 class Estudiante(models.Model):
     dni=models.CharField(max_length=10,primary_key=True)
-    nombre = models.CharField(max_length=50)\
+    nombre = models.CharField(max_length=50)
+    
     def __str__(self):
         texto = "Estudiante: {0}"
         return texto.format(self.nombre)
