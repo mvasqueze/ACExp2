@@ -55,7 +55,7 @@ ROOT_URLCONF = 'ACE.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['C:/Users/mavae/Desktop/ACExp2/ACExp2/ACE/aplicaciones/Plantillas'],
+        'DIRS': ['C:/Users/echev/Desktop/testeos/ACExp2/ACE/aplicaciones/Plantillas'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -124,3 +124,4 @@ STATIC_URL = '/static/'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+LOGIN_REDIRECT_URL = '/'

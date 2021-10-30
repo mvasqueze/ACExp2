@@ -58,8 +58,9 @@ class Plantilla(models.Model):
     dni=models.CharField(max_length=10,primary_key=True)
     nombre = models.CharField(max_length=50)
     id_banco=models.ForeignKey(Banco_preguntas,null=False, on_delete=models.CASCADE)
+    enunciado=models.CharField(max_length=500)
     def __str__(self):
-        texto = "Banco: {0}"
+        texto = "Pregunta: {0}"
         return texto.format(self.nombre)
 
 
