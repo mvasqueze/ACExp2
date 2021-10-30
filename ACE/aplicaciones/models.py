@@ -6,18 +6,12 @@ from django.db.models.fields.related import ForeignKey
 class Profe (models.Model):
     dni=models.CharField(max_length=10,primary_key=True)
     nombre = models.CharField(max_length=50)
-    def __str__(self):
-        texto = "Profe: {0}"
-        return texto.format(self.nombre)
 
 
 class Curso(models.Model):
     dni=models.CharField(max_length=10,primary_key=True)
     nombre = models.CharField(max_length=50)
     profe= models.ForeignKey(Profe,null=False,on_delete=models.CASCADE)
-    def __str__(self):
-        texto = "Curso: {0}"
-        return texto.format(self.nombre)
 
 
 
@@ -25,18 +19,12 @@ class Grupos(models.Model):
     dni=models.CharField(max_length=10,primary_key=True)
     nombre = models.CharField(max_length=50)
     curso= models.ForeignKey(Curso,null=False, on_delete=models.CASCADE)
-    def __str__(self):
-        texto = "Grupo: {0}"
-        return texto.format(self.nombre)
 
 
 
 class Estudiante(models.Model):
     dni=models.CharField(max_length=10,primary_key=True)
     nombre = models.CharField(max_length=50)
-    def __str__(self):
-        texto = "Estudiante: {0}"
-        return texto.format(self.nombre)
 
 
 class Grupo_estudiantes(models.Model):
@@ -78,17 +66,62 @@ class Plantilla(models.Model):
     nombre = models.CharField(max_length=50)
     id_banco=models.ForeignKey(Banco_preguntas,null=False, on_delete=models.CASCADE)
     enunciado=models.CharField(max_length=500)
+
     def __str__(self):
         texto = "Pregunta: {0}"
         return texto.format(self.nombre)
 
+    def getdni(self):
+        return self.dni
+        
+    def getnombre(self):
+        return self.nombre
+        
+    def getid_banco(self):
+        return self.id_banco
+        
+    def getenunciado(self):
+        return self.enunciado
+        
+    def setdni(self, dni):
+        self.dni=dni
+
+    def setnombre(self, nombre):
+        self.nombre=nombre
+
+    def setenunciado(self, enunciado):
+        self.enunciado=enunciado
 
 class Correcta (models.Model):
     id_pregunta=models.ForeignKey(Plantilla,null=False, on_delete=models.CASCADE)
     enunciado=models.CharField(max_length=50)
     respuesta=models.CharField(max_length=50)
 
+    def getid_pregunta(self):
+        return self.id_pregunta
+
+    def getenunciado(self):
+        return self.enunciado
+
+    def getrespuesta(self):
+        return self.respuesta
+
+    def setenunciado(self, enunciado):
+        self.enunciado=enunciado
+
+    def setrespuesta(self, respuesta):
+        self.respuesta=respuesta
+
     
 class Incorrecta (models.Model):
     id_pregunta=models.ForeignKey(Plantilla,null=False, on_delete=models.CASCADE)
     respuesta_equivocada=models.CharField(max_length=50)
+
+    def getid_pregunta(self):
+        return self.id_pregunta
+
+    def getrespuesta_equivocada(self):
+        return self.respuesta_equivocada
+
+    def setrespuesta_incorrecta(self, respuesta_incorrecta):
+        self.respuesta_equivocada=respuesta_incorrecta
