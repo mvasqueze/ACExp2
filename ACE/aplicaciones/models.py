@@ -28,7 +28,24 @@ class Grupos(models.Model):
     def __str__(self):
         texto = "Grupo: {0}"
         return texto.format(self.nombre)
-
+    
+    def getDni(self):
+        return self.dni
+    
+    def getNombre(self):
+        return self.nombre
+    
+    def getCurso(self):
+        return self.curso
+    
+    def setDni(self, dni):
+        self.dni = dni
+    
+    def setNombre(self, nombre):
+        self.nombre = nombre
+    
+    def setCurso(self, curso):
+        self.curso = curso
 
 
 class Estudiante(models.Model):
@@ -37,6 +54,18 @@ class Estudiante(models.Model):
     def __str__(self):
         texto = "Estudiante: {0}"
         return texto.format(self.nombre)
+    
+    def getDni(self):
+        return self.dni
+    
+    def getNombre(self):
+        return self.nombre
+
+    def setDni(self, dni):
+        self.dni = dni
+
+    def setNombre(self, nombre):
+        self.nombre = nombre
 
 
 class Grupo_estudiantes(models.Model):
@@ -73,3 +102,4 @@ class Correcta (models.Model):
 class Incorrecta (models.Model):
     id_pregunta=models.ForeignKey(Plantilla,null=False, on_delete=models.CASCADE)
     respuesta_equivocada=models.CharField(max_length=50)
+
