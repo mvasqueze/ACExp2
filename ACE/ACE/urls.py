@@ -15,7 +15,20 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from aplicaciones.views import *
+from django.urls.conf import include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('inicio/', inicio),
+    path('cursos/', verCurso),
+    path('crearCurso/', crearCurso),
+    path('bancos/', verBanco),
+    path('crearBanco/', crearBanco),
+    path('grupos/', verGrupo),
+    path('crearGrupo/', crearGrupo),
+    path('plantillas/', verPlantilla),
+    path('crearPlantilla/', crearPlantilla),
+    path('estudiantes/', estudiantes),
+    path('accounts/',include('django.contrib.auth.urls')),
 ]
