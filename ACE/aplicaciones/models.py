@@ -9,6 +9,11 @@ class Profe (models.Model):
     def __str__(self):
         texto = "Profe: {0}"
         return texto.format(self.nombre)
+    
+    def setDNI(self):
+        return self.dni
+    
+    def
 
 
 class Curso(models.Model):
