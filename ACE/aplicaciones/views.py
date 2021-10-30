@@ -1,5 +1,4 @@
 from django.shortcuts import render
-from django.shortcuts import redirect
 from aplicaciones.models import Estudiante
 # Create your views here.
 def inicio(request):

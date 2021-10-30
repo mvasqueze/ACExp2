@@ -15,7 +15,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+<<<<<<< HEAD
 from aplicaciones.views import *
+=======
+from django.urls.conf import include
+from aplicaciones.views import estudiantes
+>>>>>>> afafa7c59707d070aebc91022b69b7fea7807c21
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -29,4 +34,9 @@ urlpatterns = [
     path('plantillas/', admin.site.urls),
     path('crearPlantilla/', admin.site.urls),
     path('estudiantes/', estudiantes),
+<<<<<<< HEAD
 ]
+=======
+    path('accounts/',include('django.contrib.auth.urls')),
+]
+>>>>>>> afafa7c59707d070aebc91022b69b7fea7807c21
