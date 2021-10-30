@@ -43,6 +43,15 @@ class Grupo_estudiantes(models.Model):
     dni=models.CharField(max_length=10,primary_key=True)
     id_estudiante=models.ForeignKey(Estudiante, null=False, on_delete=CASCADE)
     id_curso=models.ForeignKey(Grupos, null=False, on_delete=CASCADE)
+    def getdni(self):
+        return self.dni
+    def getid_estudiante(self):
+        return self.id_estudiante
+    def getid_curso(self):
+        return self.id_curso
+    def setdni(self,dni):
+        self.dni=dni
+
 
 
 class Banco_preguntas(models.Model):
@@ -52,6 +61,16 @@ class Banco_preguntas(models.Model):
     def __str__(self):
         texto = "Banco de preguntas: {0}"
         return texto.format(self.nombre)
+    def getdni(self):
+        return self.dni
+    def getnombre(self):
+        return self.nombre
+    def getid_curso(self):
+        return self.curso
+    def setdni(self,dni):
+        self.dni=dni
+    def setnombre(self,nombre):
+        self.nombre=nombre 
 
 
 class Plantilla(models.Model):
