@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html>
-        <head>
-        <title>
-            <h1> Crea tu grupo </h1>
-        </head>
-         <body>
-            <p> Codigo el grupo: <input type="text" name="Grupo"/></p>
+    <head>
+        <title> Creacion grupos </title>
+    </head>
+    <body>
+        <form action="/grupos/" method="POST"> {% csrf_token %} 
+            <p> Nombre del grupo: <input type="text" name="Grupos"/></p>
+            <p> Id del grupo: <input type="text" name="idGrupo"/></p>
+            <p> Curso al que pertenece: <input type="text" name="curso"/></p>
             <p> Cantidad de grupos: <input type="number" id="quantity" name="quantity" min="1" max="15"/></p>
-            <p> Código y nombre de los estudiantes: <input type="file" id="myFile" name="filename">
-            <input type="submit">
             <input type="submit" value="Crear"/>
-         </form>
-        </body>
+        </form>
+    </body>
 </html>

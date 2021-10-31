@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from aplicaciones.models import Curso
+from aplicaciones.models import Curso, Grupos
 from aplicaciones.models import Estudiante
 # Create your views here.
 def inicio(request):
@@ -10,7 +10,6 @@ def crearCurso(request):
         newCurso= Curso()
         newCurso.setNombre(request.POST["Curso"])
         newCurso.setDNI(request.POST["idCurso"])
-        #Definir profe -> ¿Cómo definir una foreign key?
         newCurso.save()
         return render(request, 'CrearCurso.html')
     else:
@@ -20,7 +19,16 @@ def verCurso(request):
     return render(request, 'VistaCursos.html')
 
 def crearGrupo(request):
-    return render(request, 'creargrupo.html')
+    if request.method == "POST":
+        newGrupo= Grupos()
+        newGrupo.setNombre(request.POST["Grupo"])
+        newGrupo.setDni(request.POST["idGrupo"])
+        #Definir curso -> ¿Cómo definir una foreign key?
+        newGrupo.save()
+        return render(request, 'creargrupo.html')
+    else:
+        return render(request, 'creargrupo.html')
+    
 
 def verGrupo(request):
     return render(request, 'selecciongrupo.html')
