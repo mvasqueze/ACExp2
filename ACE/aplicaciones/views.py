@@ -21,7 +21,7 @@ def verCurso(request):
 def crearGrupo(request):
     if request.method == "POST":
         newGrupo= Grupos()
-        newGrupo.setNombre(request.POST["Grupo"])
+        newGrupo.setNombre(request.POST["Grupos"])
         newGrupo.setDni(request.POST["idGrupo"])
         #Definir curso -> ¿Cómo definir una foreign key?
         newGrupo.save()
