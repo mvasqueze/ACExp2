@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from ACE.aplicaciones.models import Banco_preguntas
+from aplicaciones.models import Banco_preguntas
 from aplicaciones.models import Curso, Grupos
 from aplicaciones.models import Estudiante
 # Create your views here.
