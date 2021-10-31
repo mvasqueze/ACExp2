@@ -3,32 +3,12 @@ from django.db import models
 from django.db.models.deletion import CASCADE
 from django.db.models.fields.related import ForeignKey
 # Create your models here.
-class Profe (models.Model):
-    dni=models.CharField(max_length=10,primary_key=True)
-    nombre = models.CharField(max_length=50)
 
-    def __str__(self):
-        texto = "Profe: {0}"
-        return texto.format(self.nombre)
-    
-   
-    def getDNI(self):
-        return self.dni
-    
-    def getNombre(self):
-        return self.nombre
-
-    def getDNI(self, nombre):
-        self.nombre=nombre
-    
-    def getDNI(self, dni):
-        self.dni=dni
 
 
 class Curso(models.Model):
     dni=models.CharField(max_length=10,primary_key=True)
     nombre = models.CharField(max_length=50)
-    profe= models.ForeignKey(Profe,null=False,on_delete=models.CASCADE)
     def __str__(self):
         texto = "Curso: {0}"
         return texto.format(self.nombre)
@@ -45,8 +25,7 @@ class Curso(models.Model):
     def getNombre(self):
         return self.nombre
 
-    def getProfe(self):
-        return self.profe
+   
 
 
 

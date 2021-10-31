@@ -8,8 +8,10 @@ def inicio(request):
 def crearCurso(request):
     if request.method == "POST":
         newCurso= Curso()
-        newCurso.setNombre(request.POST["Curso"])
-        newCurso.setDNI(request.POST["idCurso"])
+        newCurso.nombre=request.POST("Curso")
+        #newCurso.setNombre(request.POST["Curso"])
+        newCurso.dni=request.POST("idCurso")
+        #newCurso.setDNI(request.POST["idCurso"])
         #Definir profe -> ¿Cómo definir una foreign key?
         newCurso.save()
         return render(request, 'CrearCurso.html')
