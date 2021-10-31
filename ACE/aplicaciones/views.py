@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from ACE.aplicaciones.models import Banco_preguntas
 from aplicaciones.models import Curso, Grupos
 from aplicaciones.models import Estudiante
 # Create your views here.
@@ -34,7 +35,15 @@ def verGrupo(request):
     return render(request, 'selecciongrupo.html')
 
 def crearBanco(request):
-    return render(request, 'crearbanco.html')
+    if request.method == "POST":
+        newBanco= Banco_preguntas()
+        newBanco.setNombre(request.POST["Banco"])
+        newBanco.setDni(request.POST["idBanco"])
+        #Definir curso -> ¿Cómo definir una foreign key?
+        newBanco.save()
+        return render(request, 'crearbanco.html')
+    else:
+        return render(request, 'crearbanco.html')
 
 def verBanco(request):
     return render(request, 'seleccionbanco.html')
