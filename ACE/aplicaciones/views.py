@@ -9,8 +9,9 @@ def inicio(request):
 def crearCurso(request):
     if request.method == "POST":
         newCurso= Curso()
-        newCurso.setNombre(request.POST["Curso"])
-        newCurso.setDNI(request.POST["idCurso"])
+        newCurso.setNombre(request.POST['Curso'])
+        newCurso.setDNI(request.POST['idCurso'])
+        
         newCurso.save()
         return render(request, 'CrearCurso.html')
     else:
