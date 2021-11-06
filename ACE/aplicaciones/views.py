@@ -2,6 +2,7 @@ from django.shortcuts import redirect, render
 from aplicaciones.models import Banco_preguntas
 from aplicaciones.models import Curso, Grupos
 from aplicaciones.models import Estudiante
+
 # Create your views here.
 def inicio(request):
     return render(request, 'Inicio.html')
@@ -12,26 +13,30 @@ def crearCurso(request):
         newCurso.setNombre(request.POST["Curso"])
         newCurso.setDNI(request.POST["idCurso"])
         newCurso.save()
-        return redirect('/cursos/')
+        if request.POST.get("CrearU"):
+            return redirect('/cursos/')
+        return redirect('/crearCurso/')
     else:
         return render(request, 'CrearCurso.html')
 
 def verCurso(request):
-    return render(request, 'VistaCursos.html')
+    curso_lista=Curso.objects.all()
+    return render(request, 'VistaCursos.html', {'curso_lista':curso_lista})
 
-def crearGrupo(request):
+def crearGrupo(request, cursoid):
     if request.method == "POST":
         newGrupo= Grupos()
         newGrupo.setNombre(request.POST["Grupos"])
         newGrupo.setDni(request.POST["idGrupo"])
-        #Definir curso -> ¿Cómo definir una foreign key?
+        curso= Curso.objects.get(dni= cursoid)
+        newGrupo.curso = curso
         newGrupo.save()
         return redirect('/grupos/')
     else:
         return render(request, 'creargrupo.html')
     
 
-def verGrupo(request):
+def verGrupo(request, dni):
     return render(request, 'selecciongrupo.html')
 
 def crearBanco(request):

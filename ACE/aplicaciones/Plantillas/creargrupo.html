@@ -7,9 +7,8 @@
         <form  method="POST" action="{% url 'crearGrupo' %}"> {% csrf_token %}
             <p> Nombre del grupo: <input type="text" name="Grupo"/></p>
             <p> Id del grupo: <input type="text" name="idGrupo"/></p>
-            <p> Curso al que pertenece: <input type="text" name="curso"/></p>
-            <input type="submit" value="Crear"/>
-            <a href="/creargrupo/">
+            <input type="submit" value="Crear" name="CrearG"/>
+            <a action="{% url 'crearGrupo' %}">
                 <input type="button" value="Guardar y añadir otro"/>
             </a>
         </form>
