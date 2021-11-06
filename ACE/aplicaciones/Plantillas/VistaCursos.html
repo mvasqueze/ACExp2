@@ -1,14 +1,13 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title> Vista cursos </title>
+        <title> Seleccione el banco de preguntas al que desea acceder </title>
     </head>
     <body>
-        <h1> Selecciona el curso al que quieres acceder </h1>
-            <p> Curso 1 <input type="radio" name="Curso1"/></p>
-            <p> Curso 2 <input type="radio" name="Curso2"/></p>
-            <p> Curso 3 <input type="radio" name="Curso3"/></p>
+        <h1>Selecciona el curso al que quieres acceder:</h1>
+            {% for Curso in curso_lista %}
+               <h3> <a href="/grupos/{{Curso.dni}}"> <b>Curso: </b> {{Curso.nombre}} {{Curso.dni}} \n </p> </a> </h3>
+             {% endfor %}
             <input type="submit" value="Accceder"/>
-        </form>
     </body>
 </html>
