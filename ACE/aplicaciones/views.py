@@ -21,7 +21,11 @@ def crearCurso(request):
 
 def verCurso(request):
     curso_lista=Curso.objects.all()
+
     return render(request, 'VistaCursos.html', {'curso_lista':curso_lista})
+
+def portalCurso(request, dni):
+    return render(request, 'puenteCursos.html')
 
 def crearGrupo(request):
     if request.method == "POST":
@@ -50,7 +54,7 @@ def crearBanco(request):
     else:
         return render(request, 'crearbanco.html')
 
-def verBanco(request):
+def verBanco(request, dni):
     return render(request, 'seleccionbanco.html')
 
 def crearPlantilla(request):
