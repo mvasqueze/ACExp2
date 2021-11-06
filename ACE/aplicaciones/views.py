@@ -20,7 +20,8 @@ def crearCurso(request):
         return render(request, 'CrearCurso.html')
 
 def verCurso(request):
-    return render(request, 'VistaCursos.html')
+    curso_lista=Curso.objects.all()
+    return render(request, 'VistaCursos.html', {'curso_lista':curso_lista})
 
 def crearGrupo(request):
     if request.method == "POST":
@@ -34,7 +35,7 @@ def crearGrupo(request):
         return render(request, 'creargrupo.html')
     
 
-def verGrupo(request):
+def verGrupo(request, dni):
     return render(request, 'selecciongrupo.html')
 
 def crearBanco(request):
