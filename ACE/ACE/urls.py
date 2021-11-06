@@ -28,7 +28,9 @@ urlpatterns = [
     path('grupos/', verGrupo),
     path('crearGrupo/', crearGrupo),
     path('plantillas/', verPlantilla),
-    path('crearPlantilla/', crearPlantilla),
+    path('crearPlantilla/', crearPlantilla, name="crearPlantilla"),
     path('estudiantes/', estudiantes),
+    path('erroneas/', setIncorrectas, name="setIncorrectas"),
+    path('variacion/', setVariacion, name="setVariacion"),
     path('accounts/',include('django.contrib.auth.urls')),
 ]

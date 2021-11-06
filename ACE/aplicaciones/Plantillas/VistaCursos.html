@@ -1,14 +1,12 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title> Vista cursos </title>
-    </head>
-    <body>
-        <h1> Selecciona el curso al que quieres acceder </h1>
-            <p> Curso 1 <input type="radio" name="Curso1"/></p>
-            <p> Curso 2 <input type="radio" name="Curso2"/></p>
-            <p> Curso 3 <input type="radio" name="Curso3"/></p>
-            <input type="submit" value="Accceder"/>
-        </form>
-    </body>
-</html>
+{%  block content %}
+
+    <h1>Cursos:</h1>
+   
+{% for curso in lista_cursos %}
+ <ul>
+ 
+<p><input type="radio" name="curso"/><b>Nombre:</b> {{curso.nombre}}  <b>DNI:</b>{{curso.dni}}</p>
+</ul>
+{% endfor %}
+<input type="submit" value="Accceder"/>
+{% endblock %}
