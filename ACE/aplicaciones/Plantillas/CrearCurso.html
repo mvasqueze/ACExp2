@@ -5,7 +5,7 @@
     </head>
     <body>
         <h1> ¡Bienvenido, docente! </h1>
-        <form action="/cursos/" method="POST"> {% csrf_token %} 
+        <form  method="POST" action="{% url 'crearCurso' %}"> {% csrf_token %} 
             <p> Nombre del curso: <input type="text" name="Curso"/></p>
             <p> Id del curso: <input type="text" name="idCurso"/></p>
             <input type="submit" value="Crear"/>
