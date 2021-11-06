@@ -2,6 +2,7 @@ from django.shortcuts import redirect, render
 from aplicaciones.models import Banco_preguntas
 from aplicaciones.models import Curso, Grupos
 from aplicaciones.models import Estudiante
+
 # Create your views here.
 def inicio(request):
     return render(request, 'Inicio.html')
@@ -12,7 +13,9 @@ def crearCurso(request):
         newCurso.setNombre(request.POST["Curso"])
         newCurso.setDNI(request.POST["idCurso"])
         newCurso.save()
-        return redirect('/cursos/')
+        if request.POST.get("CrearU"):
+            return redirect('/cursos/')
+        return redirect('/crearCurso/')
     else:
         return render(request, 'CrearCurso.html')
 
