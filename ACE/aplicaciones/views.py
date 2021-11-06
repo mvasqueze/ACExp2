@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from aplicaciones.models import Banco_preguntas
 from aplicaciones.models import Curso, Grupos
 from aplicaciones.models import Estudiante
@@ -12,7 +12,7 @@ def crearCurso(request):
         newCurso.setNombre(request.POST["Curso"])
         newCurso.setDNI(request.POST["idCurso"])
         newCurso.save()
-        return render(request, 'CrearCurso.html')
+        return redirect('/cursos/')
     else:
         return render(request, 'CrearCurso.html')
 
