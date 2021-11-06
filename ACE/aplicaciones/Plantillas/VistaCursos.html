@@ -6,8 +6,12 @@
     <body>
         <h1>Selecciona el curso al que quieres acceder:</h1>
             {% for Curso in curso_lista %}
-               <h3> <a href="/grupos/{{Curso.dni}}"> <b>Curso: </b> {{Curso.nombre}} {{Curso.dni}} \n </p> </a> </h3>
+               <h3> <a href="/grupos/{{Curso.dni}}"> <b>Curso: </b> {{Curso.nombre}} {{Curso.dni}} </p> </a> </h3>
              {% endfor %}
             <input type="submit" value="Accceder"/>
+            
+        <a href="/crearCurso/">
+            <input type="button" value="Crear curso(s)"/>
+        </a>
     </body>
 </html>

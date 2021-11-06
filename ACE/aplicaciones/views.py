@@ -35,7 +35,7 @@ def crearGrupo(request):
         return render(request, 'creargrupo.html')
     
 
-def verGrupo(request):
+def verGrupo(request, dni):
     return render(request, 'selecciongrupo.html')
 
 def crearBanco(request):
