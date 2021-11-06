@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from aplicaciones.models import Banco_preguntas
 from aplicaciones.models import Curso, Grupos
 from aplicaciones.models import Estudiante
@@ -13,7 +13,7 @@ def crearCurso(request):
         newCurso.setDNI(request.POST['idCurso'])
         
         newCurso.save()
-        return render(request, 'CrearCurso.html')
+        return redirect('/cursos/')
     else:
         return render(request, 'CrearCurso.html')
 
@@ -23,7 +23,7 @@ def verCurso(request):
 def crearGrupo(request):
     if request.method == "POST":
         newGrupo= Grupos()
-        newGrupo.setNombre(request.POST["Grupo"])
+        newGrupo.setNombre(request.POST["Grupos"])
         newGrupo.setDni(request.POST["idGrupo"])
         #Definir curso -> ¿Cómo definir una foreign key?
         newGrupo.save()
