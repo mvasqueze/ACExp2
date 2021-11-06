@@ -1,5 +1,6 @@
 from django.shortcuts import render
-from aplicaciones.models import Curso
+from aplicaciones.models import Banco_preguntas
+from aplicaciones.models import Curso, Grupos
 from aplicaciones.models import Estudiante
 # Create your views here.
 def inicio(request):
@@ -8,9 +9,9 @@ def inicio(request):
 def crearCurso(request):
     if request.method == "POST":
         newCurso= Curso()
-        newCurso.setNombre(request.POST["Curso"])
-        newCurso.setDNI(request.POST["idCurso"])
-        #Definir profe -> ¿Cómo definir una foreign key?
+        newCurso.setNombre(request.POST['Curso'])
+        newCurso.setDNI(request.POST['idCurso'])
+        
         newCurso.save()
         return render(request, 'CrearCurso.html')
     else:
@@ -20,13 +21,30 @@ def verCurso(request):
     return render(request, 'VistaCursos.html')
 
 def crearGrupo(request):
-    return render(request, 'creargrupo.html')
+    if request.method == "POST":
+        newGrupo= Grupos()
+        newGrupo.setNombre(request.POST["Grupo"])
+        newGrupo.setDni(request.POST["idGrupo"])
+        #Definir curso -> ¿Cómo definir una foreign key?
+        newGrupo.save()
+        return render(request, 'creargrupo.html')
+    else:
+        return render(request, 'creargrupo.html')
+    
 
 def verGrupo(request):
     return render(request, 'selecciongrupo.html')
 
 def crearBanco(request):
-    return render(request, 'crearbanco.html')
+    if request.method == "POST":
+        newBanco= Banco_preguntas()
+        newBanco.setNombre(request.POST["Banco"])
+        newBanco.setDni(request.POST["idBanco"])
+        #Definir curso -> ¿Cómo definir una foreign key?
+        newBanco.save()
+        return render(request, 'crearbanco.html')
+    else:
+        return render(request, 'crearbanco.html')
 
 def verBanco(request):
     return render(request, 'seleccionbanco.html')
