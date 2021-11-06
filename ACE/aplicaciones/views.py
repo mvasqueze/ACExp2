@@ -36,7 +36,8 @@ def crearGrupo(request):
     
 
 def verGrupo(request, dni):
-    return render(request, 'selecciongrupo.html')
+    grupo_lista=Grupos.objects.filter(curso=dni)
+    return render(request, 'selecciongrupo.html', {'grupo_lista':grupo_lista})
 
 def crearBanco(request):
     if request.method == "POST":
