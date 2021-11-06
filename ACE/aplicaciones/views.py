@@ -26,7 +26,7 @@ def crearGrupo(request):
         newGrupo.setDni(request.POST["idGrupo"])
         #Definir curso -> ¿Cómo definir una foreign key?
         newGrupo.save()
-        return render(request, 'creargrupo.html')
+        return redirect('/grupos/')
     else:
         return render(request, 'creargrupo.html')
     

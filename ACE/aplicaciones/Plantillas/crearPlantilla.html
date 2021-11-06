@@ -3,6 +3,7 @@
 
     <h1>CREA TU PLANTILLA</h1>
 
+    <form action="/plantillas/" method="POST"> {% csrf_token %} 
     <div>
         <label for="id_plant">Código de la plantilla:</label>
         <input type="number" id="id_plant" name="id_plant" min="0" max="9999">
@@ -46,5 +47,6 @@
     
 
     <input type="submit" value="Crear">
+    </form>
 
 </html>
