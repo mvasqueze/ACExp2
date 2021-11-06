@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title> Configura la variación de la plantilla </title>
+    </head>
+    <body>
+        <form  method="POST" action="{% url 'setVariacion' %}"> {% csrf_token %} 
+            <p> Enunciado (relleno): <input type="text" name="enunciado"/></p>
+            <p> Respuesta correcta: <input type="text" name="respuesta"/></p>
+            <input type="submit" value="Crear" name="crear1"/>
+            <a action="{% url 'setVariacion' %}">
+                <input type="button" value="Guardar y añadir otro" name="crearV"/>
+            </a>
+        </form>
+    </body>
+</html>
