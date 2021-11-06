@@ -8,9 +8,9 @@
         <form  method="POST" action="{% url 'crearCurso' %}"> {% csrf_token %} 
             <p> Nombre del curso: <input type="text" name="Curso"/></p>
             <p> Id del curso: <input type="text" name="idCurso"/></p>
-            <input type="submit" value="Crear"/>
-            <a href="/crearCurso/">
-                <input type="button" value="Guardar y añadir otro"/>
+            <input type="submit" value="Crear" name="CrearU"/>
+            <a action="{% url 'crearCurso' %}">
+                <input type="submit" value="Guardar y añadir otro" name="CrearV"/>
             </a>
         </form>
     </body>

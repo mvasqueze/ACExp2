@@ -25,7 +25,7 @@ urlpatterns = [
     path('crearCurso/', crearCurso, name="crearCurso"),
     path('bancos/', verBanco),
     path('crearBanco/', crearBanco),
-    path('grupos/', verGrupo),
+    path('grupos/<dni>', verGrupo),
     path('crearGrupo/', crearGrupo),
     path('plantillas/', verPlantilla),
     path('crearPlantilla/', crearPlantilla, name="crearPlantilla"),

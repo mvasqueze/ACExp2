@@ -3,6 +3,7 @@ from aplicaciones.models import Incorrecta, Plantilla, Correcta
 from aplicaciones.models import Banco_preguntas
 from aplicaciones.models import Curso, Grupos
 from aplicaciones.models import Estudiante
+
 # Create your views here.
 def inicio(request):
     return render(request, 'Inicio.html')
@@ -14,7 +15,9 @@ def crearCurso(request):
         newCurso.setDNI(request.POST['idCurso'])
         
         newCurso.save()
-        return redirect('/cursos/')
+        if request.POST.get("CrearU"):
+            return redirect('/cursos/')
+        return redirect('/crearCurso/')
     else:
         return render(request, 'CrearCurso.html')
 
@@ -34,8 +37,9 @@ def crearGrupo(request):
         return render(request, 'creargrupo.html')
     
 
-def verGrupo(request):
-    return render(request, 'selecciongrupo.html')
+def verGrupo(request, dni):
+    grupo_lista=Grupos.objects.filter(curso=dni)
+    return render(request, 'selecciongrupo.html', {'grupo_lista':grupo_lista})
 
 def crearBanco(request):
     if request.method == "POST":
