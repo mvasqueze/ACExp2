@@ -52,8 +52,9 @@ def crearBanco(request):
     else:
         return render(request, 'crearbanco.html')
 
-def verBanco(request):
-    return render(request, 'seleccionbanco.html')
+def verBanco(request, dni):
+    Banco_lista= Banco_preguntas.objects.filter(curso=dni)
+    return render(request, 'seleccionbanco.html', {"Banco_lista":Banco_lista})
 
 def crearPlantilla(request):
     if request.method == "POST":
@@ -107,16 +108,17 @@ def setIncorrectas(request):
     else:
        return render(request, 'setIncorrectas.html') 
 
-def setVariacion(request):
+def setVariacion(request, plantilla_id):
     if request.method=="POST":
         correcta= Correcta()
         #Falta la ForeignKey
         correcta.setenunciado(request.POST['enunciado'])
         correcta.setrespuesta(request.POST['respuesta'])
+        plantilla=
         correcta.save()
-        if request.POST.get("crearV"):
-            return redirect('/variacion/')
-        return redirect('/plantillas/')
+        if request.POST.get("crear1"):
+            return redirect('/plantillas/')
+        return redirect('/variacion/')
     else:
         return render(request, 'setVariacion.html')
 
