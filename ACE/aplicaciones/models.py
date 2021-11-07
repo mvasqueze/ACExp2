@@ -27,8 +27,6 @@ class Curso(models.Model):
 
    
 
-
-
 class Grupos(models.Model):
     dni=models.CharField(max_length=10,primary_key=True)
     nombre = models.CharField(max_length=50)
@@ -121,19 +119,17 @@ class Banco_preguntas(models.Model):
 
 class Plantilla(models.Model):
     dni=models.CharField(max_length=10,primary_key=True)
-    nombre = models.CharField(max_length=50)
-    id_banco=models.ForeignKey(Banco_preguntas,null=False, on_delete=models.CASCADE)
+    #id_banco=models.ForeignKey(Banco_preguntas,null=False, on_delete=models.CASCADE)
     enunciado=models.CharField(max_length=500)
 
     def __str__(self):
-        texto = "Pregunta: {0}"
-        return texto.format(self.nombre)
+        texto = "Pregunta: {0} - Enunciado: {1}"
+        return texto.format(self.dni, self.enunciado)
 
     def getdni(self):
         return self.dni
         
-    def getnombre(self):
-        return self.nombre
+
         
     def getid_banco(self):
         return self.id_banco
@@ -144,14 +140,15 @@ class Plantilla(models.Model):
     def setdni(self, dni):
         self.dni=dni
 
-    def setnombre(self, nombre):
-        self.nombre=nombre
 
     def setenunciado(self, enunciado):
         self.enunciado=enunciado
 
+    def setVariaciones(self, variaciones):
+        self.variaciones=variaciones
+
 class Correcta (models.Model):
-    id_pregunta=models.ForeignKey(Plantilla,null=False, on_delete=models.CASCADE)
+    #id_pregunta=models.ForeignKey(Plantilla,null=False, on_delete=models.CASCADE)
     enunciado=models.CharField(max_length=50)
     respuesta=models.CharField(max_length=50)
 
@@ -172,8 +169,8 @@ class Correcta (models.Model):
 
     
 class Incorrecta (models.Model):
-    id_pregunta=models.ForeignKey(Plantilla,null=False, on_delete=models.CASCADE)
-    respuesta_equivocada=models.CharField(max_length=50)
+    #id_pregunta=models.ForeignKey("Plantilla",null=False, on_delete=models.CASCADE)
+    respuesta_equivocada=models.CharField(max_length=50,  blank=True, default='')
     def getid_pregunta(self):
         return self.id_pregunta
 
