@@ -44,6 +44,9 @@ class Grupo_estudiantes(models.Model):
     id_estudiante=models.CharField(max_length=10)
     nombre_estudiante=models.CharField(max_length=20)
     id_curso=models.ForeignKey(Grupos, null=False, on_delete=CASCADE)
+    def __str__(self):
+        texto = "Estudainte: {0}, Curso:{1}"
+        return texto.format(self.nombre_estudiante,self.id_estudiante)
     def getdni(self):
         return self.dni
     def getid_estudiante(self):
