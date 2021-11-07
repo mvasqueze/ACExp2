@@ -117,17 +117,16 @@ def setIncorrectas(request):
     else:
        return render(request, 'setIncorrectas.html') 
 
-def setVariacion(request, plantilla_id):
+def setVariacion(request):
     if request.method=="POST":
         correcta= Correcta()
         #Falta la ForeignKey
         correcta.setenunciado(request.POST['enunciado'])
         correcta.setrespuesta(request.POST['respuesta'])
-        plantilla=
         correcta.save()
-        if request.POST.get("crear1"):
-            return redirect('/plantillas/')
-        return redirect('/variacion/')
+        if request.POST.get("crearV"):
+            return redirect('/variacion/')
+        return redirect('/plantillas/')
     else:
         return render(request, 'setVariacion.html')
 
