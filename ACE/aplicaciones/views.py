@@ -22,14 +22,8 @@ def crearCurso(request):
         return render(request, 'CrearCurso.html')
 
 def verCurso(request):
-<<<<<<< HEAD
     curso_lista=Curso.objects.all()
-
     return render(request, 'VistaCursos.html', {'curso_lista':curso_lista})
-=======
-    lista_cursos=Curso.objects.all()
-    return render(request, 'VistaCursos.html', {'lista_cursos': lista_cursos })
->>>>>>> 179566d14e645ae001642c67a39989225900bc5b
 
 def crearGrupo(request):
     if request.method == "POST":

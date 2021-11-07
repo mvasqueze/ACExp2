@@ -30,11 +30,8 @@ urlpatterns = [
     path('plantillas/', verPlantilla),
     path('crearPlantilla/', crearPlantilla, name="crearPlantilla"),
     path('estudiantes/', estudiantes),
-<<<<<<< HEAD
     path('crearExamen/', crearExamen),
-=======
     path('erroneas/', setIncorrectas, name="setIncorrectas"),
     path('variacion/', setVariacion, name="setVariacion"),
->>>>>>> 179566d14e645ae001642c67a39989225900bc5b
     path('accounts/',include('django.contrib.auth.urls')),
 ]
