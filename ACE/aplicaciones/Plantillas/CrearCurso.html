@@ -5,11 +5,13 @@
     </head>
     <body>
         <h1> ¡Bienvenido, docente! </h1>
+        <form  method="POST" action="{% url 'crearCurso' %}"> {% csrf_token %} 
             <p> Nombre del curso: <input type="text" name="Curso"/></p>
             <p> Id del curso: <input type="text" name="idCurso"/></p>
-            <p> Profesor encargado: <input type="text" name="profesor"/></p>
-            <p> Cantidad de cursos: <input type="number" id="quantity" name="quantity" min="1" max="15"/></p>
-            <input type="submit" value="Crear"/>
+            <input type="submit" value="Crear" name="CrearU"/>
+            <a action="{% url 'crearCurso' %}">
+                <input type="submit" value="Guardar y añadir otro" name="CrearV"/>
+            </a>
         </form>
     </body>
 </html>

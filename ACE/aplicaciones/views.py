@@ -1,7 +1,13 @@
 from django.shortcuts import redirect, render
+<<<<<<< HEAD
 from ACE.aplicaciones.models import Grupo_estudiantes
 from aplicaciones.models import Banco_preguntas
 from aplicaciones.models import Curso, Grupos
+=======
+from aplicaciones.models import Banco_preguntas
+from aplicaciones.models import Curso, Grupos
+from aplicaciones.models import Estudiante
+>>>>>>> master
 
 # Create your views here.
 def inicio(request):
