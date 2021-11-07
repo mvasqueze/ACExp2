@@ -50,8 +50,9 @@ def crearBanco(request):
     else:
         return render(request, 'crearbanco.html')
 
-def verBanco(request):
-    return render(request, 'seleccionbanco.html')
+def verBanco(request, dni):
+    Banco_lista= Banco_preguntas.objects.filter(curso=dni)
+    return render(request, 'seleccionbanco.html', {"Banco_lista":Banco_lista})
 
 def crearPlantilla(request):
     return render(request, 'crearPlantilla.html')
