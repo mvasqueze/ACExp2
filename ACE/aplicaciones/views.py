@@ -30,11 +30,8 @@ def crearGrupo(request, cursoid):
         newGrupo= Grupos()
         newGrupo.setNombre(request.POST["Grupos"])
         newGrupo.setDni(request.POST["idGrupo"])
-<<<<<<< HEAD
         curso= Curso.objects.get(dni= cursoid)
         newGrupo.curso = curso
-=======
->>>>>>> master
         newGrupo.save()
         return redirect('/grupos/')
     else:
@@ -62,13 +59,10 @@ def crearBanco(request, dni):
 
 def verBanco(request, dni):
     Banco_lista= Banco_preguntas.objects.filter(curso=dni)
-<<<<<<< HEAD
     return render(request, 'seleccionbanco.html', {"Banco_lista":Banco_lista})
-=======
     data={}
     data["dni"]=dni
     return render(request, 'seleccionbanco.html', {"Banco_lista":Banco_lista}, {"data":data})
->>>>>>> master
 
 def crearPlantilla(request):
     if request.method == "POST":
