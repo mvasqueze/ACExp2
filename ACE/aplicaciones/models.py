@@ -140,7 +140,7 @@ class Plantilla(models.Model):
         self.variaciones=variaciones
 
 class Correcta (models.Model):
-    #id_pregunta=models.ForeignKey(Plantilla,null=False, on_delete=models.CASCADE)
+    id_pregunta=models.ForeignKey(Plantilla, blank=True, null=True, on_delete=models.CASCADE)
     enunciado=models.CharField(max_length=50)
     respuesta=models.CharField(max_length=50)
 
@@ -161,7 +161,7 @@ class Correcta (models.Model):
 
     
 class Incorrecta (models.Model):
-    #id_pregunta=models.ForeignKey("Plantilla",null=False, on_delete=models.CASCADE)
+    id_pregunta=models.ForeignKey("Plantilla", blank=True, null=True, on_delete=models.CASCADE)
     respuesta_equivocada=models.CharField(max_length=50,  blank=True, default='')
     def getid_pregunta(self):
         return self.id_pregunta

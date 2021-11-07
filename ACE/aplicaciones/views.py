@@ -57,9 +57,7 @@ def crearBanco(request, dni):
 
 def verBanco(request, dni):
     Banco_lista= Banco_preguntas.objects.filter(curso=dni)
-    data={}
-    data["dni"]=dni
-    return render(request, 'seleccionbanco.html', {"Banco_lista":Banco_lista}, {"data":data})
+    return render(request, 'seleccionbanco.html', {"Banco_lista":Banco_lista})
 
 def crearPlantilla(request):
     if request.method == "POST":
