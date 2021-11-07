@@ -24,9 +24,6 @@ def verCurso(request):
 
     return render(request, 'VistaCursos.html', {'curso_lista':curso_lista})
 
-def portalCurso(request, dni):
-    return render(request, 'puenteCursos.html')
-
 def crearGrupo(request):
     if request.method == "POST":
         newGrupo= Grupos()
