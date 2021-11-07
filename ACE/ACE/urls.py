@@ -24,7 +24,7 @@ urlpatterns = [
     path('cursos/', verCurso),
     path('crearCurso/', crearCurso, name="crearCurso"),
     path('bancos/<dni>', verBanco),
-    path('crearBanco/<dni>', crearBanco, name="crearBanco"),
+    path('crearBanco/', crearBanco, name="crearBanco"),
     path('grupos/<dni>', verGrupo),
     path('crearGrupo/<dni>', crearGrupo, name="crearGrupo"),
     path('plantillas/', verPlantilla),
@@ -34,4 +34,5 @@ urlpatterns = [
     path('erroneas/', setIncorrectas, name="setIncorrectas"),
     path('variacion/', setVariacion, name="setVariacion"),
     path('accounts/',include('django.contrib.auth.urls')),
+    path('crearEstudiantes/<idcurso>',crearEstudiante, name="crearEstudiante"),
 ]
