@@ -9,8 +9,9 @@
                <h3> <a href="/bancos/{{Banco.dni}}"> <b>Banco: </b> {{Banco.nombre}} {{Banco.dni}} </p> </a> </h3>
              {% endfor %}
         </form>
-        <a href="/crearBanco/{{data.dni}}">
-            <input type="button" value="Crear banco(s)"/>
+        {% for Banco in Banco_lista %}
+        <a href="/crearBanco/{{Banco.dni}}"><b>crearBanco</b>
+            {% endfor %}
         </a>
     </body>
 </html>

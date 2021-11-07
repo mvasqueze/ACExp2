@@ -1,17 +1,8 @@
 from django.shortcuts import redirect, render
-<<<<<<< HEAD
-<<<<<<< HEAD
-from ACE.aplicaciones.models import Grupo_estudiantes
+from aplicaciones.models import Grupo_estudiantes
 from aplicaciones.models import Banco_preguntas
 from aplicaciones.models import Curso, Grupos
-=======
-=======
 from aplicaciones.models import Incorrecta, Plantilla, Correcta
->>>>>>> master
-from aplicaciones.models import Banco_preguntas
-from aplicaciones.models import Curso, Grupos
-from aplicaciones.models import Estudiante
->>>>>>> master
 
 # Create your views here.
 def inicio(request):
@@ -51,24 +42,24 @@ def verGrupo(request, dni):
 
 def crearBanco(request, dni):
     if request.method == "POST":
-        Banco_Lista=Banco_preguntas.objects.get(curso=dni)
+        curso=Curso.objects.get(curso=dni)
+        data={'dni': dni}
         newBanco= Banco_preguntas()
-        newBanco.curso=Banco_Lista
+        newBanco.curso=curso
         newBanco.setnombre(request.POST["Banco"])
         newBanco.setdni(request.POST["idBanco"])
         newBanco.save()
         if request.POST.get("CrearU"):
             return redirect('/crearBanco/')
-        else:
+        elif request.POST.get("CrearV"):
             return redirect('/plantillas/')
+        return render(request, 'crearbanco.html', {"curso":curso}, {"data":data})
     else:
         return render(request, 'crearbanco.html')
 
 def verBanco(request, dni):
     Banco_lista= Banco_preguntas.objects.filter(curso=dni)
-    data={}
-    data["dni"]=dni
-    return render(request, 'seleccionbanco.html', {"Banco_lista":Banco_lista}, {"data":data})
+    return render(request, 'seleccionbanco.html', {"Banco_lista":Banco_lista},)
 
 def crearPlantilla(request):
     if request.method == "POST":
