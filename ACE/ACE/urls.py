@@ -31,4 +31,5 @@ urlpatterns = [
     path('crearPlantilla/', crearPlantilla),
     path('estudiantes/', estudiantes),
     path('accounts/',include('django.contrib.auth.urls')),
+    path('crearEstudiantes/<idcurso>',crearEstudiante, name="crearEstudiante"),
 ]

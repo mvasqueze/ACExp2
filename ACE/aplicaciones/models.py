@@ -40,8 +40,9 @@ class Estudiante(models.Model):
 
 
 class Grupo_estudiantes(models.Model):
-    dni=models.CharField(max_length=10,primary_key=True)
-    id_estudiante=models.ForeignKey(Estudiante, null=False, on_delete=CASCADE)
+    dni=models.AutoField(max_length=10,primary_key=True)
+    id_estudiante=models.CharField(max_length=10)
+    nombre_estudiante=models.CharField(max_length=20)
     id_curso=models.ForeignKey(Grupos, null=False, on_delete=CASCADE)
     def getdni(self):
         return self.dni
@@ -49,8 +50,12 @@ class Grupo_estudiantes(models.Model):
         return self.id_estudiante
     def getid_curso(self):
         return self.id_curso
-    def setdni(self,dni):
-        self.dni=dni
+    def getestudiante(self):
+        return self.nombre_estudiante
+    def setestudiante(self,estudiante):
+        self.nombre_estudiante=estudiante
+    def setId_Estudiante(self,id):
+        self.id_estudiante=id
 
 
 
