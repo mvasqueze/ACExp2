@@ -1,8 +1,8 @@
 from django.shortcuts import redirect, render
-from aplicaciones.models import Incorrecta, Plantilla, Correcta
+from aplicaciones.models import Grupo_estudiantes
 from aplicaciones.models import Banco_preguntas
 from aplicaciones.models import Curso, Grupos
-from aplicaciones.models import Estudiante
+from aplicaciones.models import Incorrecta, Plantilla, Correcta
 
 # Create your views here.
 def inicio(request):
@@ -38,28 +38,32 @@ def crearGrupo(request):
 
 def verGrupo(request, dni):
     grupo_lista=Grupos.objects.filter(curso=dni)
-    return render(request, 'selecciongrupo.html', {'grupo_lista':grupo_lista})
+    data={}
+    data["curso"]=dni
+    return render(request, 'selecciongrupo.html', {'grupo_lista':grupo_lista},{"data":data})
 
-def crearBanco(request, dni):
+def crearBanco(request):
     if request.method == "POST":
-        Banco_Lista=Banco_preguntas.objects.get(curso=dni)
+        curso=Curso.objects.get(dni=request.POST["cursoid"])
         newBanco= Banco_preguntas()
-        newBanco.curso=Banco_Lista
+        newBanco.curso=curso
         newBanco.setnombre(request.POST["Banco"])
         newBanco.setdni(request.POST["idBanco"])
         newBanco.save()
         if request.POST.get("CrearU"):
             return redirect('/crearBanco/')
-        else:
+        elif request.POST.get("CrearV"):
             return redirect('/plantillas/')
+        return render(request, 'crearbanco.html',)
     else:
         return render(request, 'crearbanco.html')
 
 def verBanco(request, dni):
     Banco_lista= Banco_preguntas.objects.filter(curso=dni)
     data={}
-    data["dni"]=dni
-    return render(request, 'seleccionbanco.html', {"Banco_lista":Banco_lista}, {"data":data})
+    data["Banco_lista"]=Banco_lista
+    data["curso"]=dni
+    return render(request, 'seleccionbanco.html',{"data":data})
 
 def crearPlantilla(request):
     if request.method == "POST":
@@ -130,9 +134,20 @@ def setVariacion(request):
 def verPlantilla(request):
     return render(request, 'plantillas.html')
 
-def estudiantes(request):
-    estudiante_lista=Estudiante.objects.all()
+def estudiantes(request,cursoid):
+    estudiante_lista=Grupo_estudiantes.objects.filter(id_curso=cursoid)
     return render(request, 'estudiantes.html', {'estudiante_lista': estudiante_lista })
+
+def crearEstudiante(request,cursoid):
+    if request.method == "POST":
+        curso=Curso.objects.get(dni=cursoid)
+        newBanco= Grupo_estudiantes()
+        newBanco.setestudiante(request.POST["Nombre"])
+        newBanco.setId_Estudiante(request.POST["idEstudiante"])
+        newBanco.save()
+        return redirect(request, '')
+    else:
+        return render(request, 'crearEstudiante.html')
 
 def crearExamen(request):
     return render(request, 'crearExamenes.html')
