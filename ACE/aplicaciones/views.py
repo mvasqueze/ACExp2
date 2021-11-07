@@ -30,7 +30,6 @@ def crearGrupo(request):
         newGrupo= Grupos()
         newGrupo.setNombre(request.POST["Grupos"])
         newGrupo.setDni(request.POST["idGrupo"])
-        #Definir curso -> ¿Cómo definir una foreign key?
         newGrupo.save()
         return render(request, 'creargrupo.html')
     else:
@@ -41,19 +40,26 @@ def verGrupo(request, dni):
     grupo_lista=Grupos.objects.filter(curso=dni)
     return render(request, 'selecciongrupo.html', {'grupo_lista':grupo_lista})
 
-def crearBanco(request):
+def crearBanco(request, dni):
     if request.method == "POST":
+        Banco_Lista=Banco_preguntas.objects.get(curso=dni)
         newBanco= Banco_preguntas()
-        newBanco.setNombre(request.POST["Banco"])
-        newBanco.setDni(request.POST["idBanco"])
-        #Definir curso -> ¿Cómo definir una foreign key?
+        newBanco.curso=Banco_Lista
+        newBanco.setnombre(request.POST["Banco"])
+        newBanco.setdni(request.POST["idBanco"])
         newBanco.save()
-        return render(request, 'crearbanco.html')
+        if request.POST.get("CrearU"):
+            return redirect('/crearBanco/')
+        else:
+            return redirect('/plantillas/')
     else:
         return render(request, 'crearbanco.html')
 
 def verBanco(request, dni):
-    return render(request, 'seleccionbanco.html')
+    Banco_lista= Banco_preguntas.objects.filter(curso=dni)
+    data={}
+    data["dni"]=dni
+    return render(request, 'seleccionbanco.html', {"Banco_lista":Banco_lista}, {"data":data})
 
 def crearPlantilla(request):
     if request.method == "POST":
