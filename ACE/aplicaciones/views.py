@@ -38,12 +38,13 @@ def crearGrupo(request):
 
 def verGrupo(request, dni):
     grupo_lista=Grupos.objects.filter(curso=dni)
-    return render(request, 'selecciongrupo.html', {'grupo_lista':grupo_lista})
+    data={}
+    data["curso"]=dni
+    return render(request, 'selecciongrupo.html', {'grupo_lista':grupo_lista},{"data":data})
 
-def crearBanco(request, dni):
+def crearBanco(request):
     if request.method == "POST":
-        curso=Curso.objects.get(curso=dni)
-        data={'dni': dni}
+        curso=Curso.objects.get(dni=request.POST["cursoid"])
         newBanco= Banco_preguntas()
         newBanco.curso=curso
         newBanco.setnombre(request.POST["Banco"])
@@ -53,13 +54,16 @@ def crearBanco(request, dni):
             return redirect('/crearBanco/')
         elif request.POST.get("CrearV"):
             return redirect('/plantillas/')
-        return render(request, 'crearbanco.html', {"curso":curso}, {"data":data})
+        return render(request, 'crearbanco.html',)
     else:
         return render(request, 'crearbanco.html')
 
 def verBanco(request, dni):
     Banco_lista= Banco_preguntas.objects.filter(curso=dni)
-    return render(request, 'seleccionbanco.html', {"Banco_lista":Banco_lista},)
+    data={}
+    data["Banco_lista"]=Banco_lista
+    data["curso"]=dni
+    return render(request, 'seleccionbanco.html',{"data":data})
 
 def crearPlantilla(request):
     if request.method == "POST":
