@@ -56,45 +56,45 @@ def verBanco(request, dni):
     Banco_lista= Banco_preguntas.objects.filter(curso=dni)
     return render(request, 'seleccionbanco.html', {"Banco_lista":Banco_lista})
 
-def crearPlantilla(request):
+def crearPlantilla(request, dni):
     if request.method == "POST":
-        #banco= Banco_preguntas.objects.get(id=request.POST.get("dni"))
+        banco= Banco_preguntas.objects.get(dni=dni)
         newPlant= Plantilla()
-        #newPlant.id_banco=banco.dni
+        newPlant.id_banco=banco
         newPlant.setdni(request.POST['id_plant'])
         newPlant.setenunciado(request.POST['enunciado'])
         newPlant.save()
         #return redirect('/crearPlantilla/')
-        return redirect('/erroneas/')
+        return redirect('/variacion/')
     else:
         #return render(request, 'crearPlantilla.html')
         return render(request, 'crearPlantilla.html')
 
-def setIncorrectas(request):
+def setIncorrectas(request, plantilla_id):
     if request.method=="POST":
+        plantilla=Plantilla.objects.get(dni=plantilla_id)
+        
         #plant=Plantilla.onjects.get(id=request.POST.get("dni"))
         newInc1=Incorrecta()
-        #newInc1.id_pregunta=plant.dni
+        newInc1.id_pregunta=plantilla
         newInc1.setrespuesta_incorrecta(request.POST['opc1'])
-        
         newInc2=Incorrecta()
-        #newInc2.id_pregunta=plant.dni
+        newInc2.id_pregunta=plantilla
         newInc2.setrespuesta_incorrecta(request.POST['opc2'])
-        
         newInc3=Incorrecta()
-        #newInc3.id_pregunta=plant.dni
+        newInc3.id_pregunta=plantilla
         newInc3.setrespuesta_incorrecta(request.POST['opc3'])
         newInc4=Incorrecta()
-        #newInc4.id_pregunta=plant.dni
+        newInc4.id_pregunta=plantilla
         newInc4.setrespuesta_incorrecta(request.POST['opc4'])
         newInc5=Incorrecta()
-        #newInc5.id_pregunta=plant.dni
+        newInc5.id_pregunta=plantilla
         newInc5.setrespuesta_incorrecta(request.POST['opc5'])
         newInc6=Incorrecta()
-        #newInc6.id_pregunta=plant.dni
+        newInc6.id_pregunta=plantilla
         newInc6.setrespuesta_incorrecta(request.POST['opc6'])
         newInc7=Incorrecta()
-        #newInc7.id_pregunta=plant.dni
+        newInc7.id_pregunta=plantilla
         newInc7.setrespuesta_incorrecta(request.POST['opc7'])
         newInc1.save()
         newInc2.save()
@@ -104,20 +104,20 @@ def setIncorrectas(request):
         newInc6.save()
         newInc7.save()
 
-        return redirect('/variacion/') 
+        return redirect('/plantillas/') 
     else:
        return render(request, 'setIncorrectas.html') 
 
 def setVariacion(request, plantilla_id):
     if request.method=="POST":
         correcta= Correcta()
-        #Falta la ForeignKey
         correcta.setenunciado(request.POST['enunciado'])
         correcta.setrespuesta(request.POST['respuesta'])
-        plantilla=
+        plantilla=Plantilla.objects.get(dni=plantilla_id)
+        correcta.id_pregunta=plantilla
         correcta.save()
         if request.POST.get("crear1"):
-            return redirect('/plantillas/')
+            return redirect('/erroneas/')
         return redirect('/variacion/')
     else:
         return render(request, 'setVariacion.html')
