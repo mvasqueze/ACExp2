@@ -1,12 +1,19 @@
 <!DOCTYPE html>
 <html>
 
+<head>
     <h1>CREA TU PLANTILLA</h1>
+</head>
 
+<<<<<<< HEAD
     <form action="/plantillas/" method="POST"> {% csrf_token %} 
+=======
+<body>
+<form  method="POST" action="{% url 'crearPlantilla' %}"> {% csrf_token %} 
+>>>>>>> master
     <div>
         <label for="id_plant">Código de la plantilla:</label>
-        <input type="number" id="id_plant" name="id_plant" min="0" max="9999">
+        <input type="text" id="id_plant" name="id_plant">
     </div>
 
     <div>
@@ -14,39 +21,20 @@
         <input type="text" id="enunciado" name="enunciado">
     </div>
 
-    <div>
-        <label for="variaciones">Número de variaciones:</label>
-        <input type="number" id="variaciones" name="variaciones" min="1" max="15">
-    </div>
+    
 
     <!-- lo siguiente se hace el número de variaciones -->
 
-    <div>
-        <label for="variación">Opción para rellenar:</label>
-        <input type="text" id="variación" name="variación">
-    </div>
-
-     <!-- Debe coincidir con las respuestas de la siguiente div -->
-
-    <div>
-        <label for="answVar">Respuesta de la variación:</label>
-        <input type="text" id="answVar" name="answVar">
-    </div>
-
-    <div>
-        <label for="BancIncorr">Cantidad de respuestas incorrectas para la plantilla:</label>
-        <input type="number" id="BancIncorr" name="BancIncorr" min="3" max="30">
-    </div>
-
-    <!-- Debe repetirse el número de veces que se definió en el punto anterior -->
-    <div>
-        <label for="opcIncorr">Respuesta de la variación:</label>
-        <input type="opcIncorr" id="opcIncorr" name="answVar">
-    </div>
+    
 
     
 
     <input type="submit" value="Crear">
+<<<<<<< HEAD
     </form>
 
+=======
+</form>
+</body>
+>>>>>>> master
 </html>
