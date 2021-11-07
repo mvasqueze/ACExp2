@@ -1,7 +1,9 @@
 from django.shortcuts import redirect, render
+from aplicaciones.models import Incorrecta, Plantilla, Correcta
 from aplicaciones.models import Banco_preguntas
 from aplicaciones.models import Curso, Grupos
 from aplicaciones.models import Estudiante
+
 # Create your views here.
 def inicio(request):
     return render(request, 'Inicio.html')
@@ -13,12 +15,15 @@ def crearCurso(request):
         newCurso.setDNI(request.POST['idCurso'])
         
         newCurso.save()
-        return redirect('/cursos/')
+        if request.POST.get("CrearU"):
+            return redirect('/cursos/')
+        return redirect('/crearCurso/')
     else:
         return render(request, 'CrearCurso.html')
 
 def verCurso(request):
-    return render(request, 'VistaCursos.html')
+    curso_lista=Curso.objects.all()
+    return render(request, 'VistaCursos.html', {'curso_lista':curso_lista})
 
 def crearGrupo(request):
     if request.method == "POST":
@@ -32,8 +37,9 @@ def crearGrupo(request):
         return render(request, 'creargrupo.html')
     
 
-def verGrupo(request):
-    return render(request, 'selecciongrupo.html')
+def verGrupo(request, dni):
+    grupo_lista=Grupos.objects.filter(curso=dni)
+    return render(request, 'selecciongrupo.html', {'grupo_lista':grupo_lista})
 
 def crearBanco(request):
     if request.method == "POST":
@@ -46,11 +52,76 @@ def crearBanco(request):
     else:
         return render(request, 'crearbanco.html')
 
-def verBanco(request):
-    return render(request, 'seleccionbanco.html')
+def verBanco(request, dni):
+    Banco_lista= Banco_preguntas.objects.filter(curso=dni)
+    return render(request, 'seleccionbanco.html', {"Banco_lista":Banco_lista})
 
 def crearPlantilla(request):
-    return render(request, 'crearPlantilla.html')
+    if request.method == "POST":
+        #banco= Banco_preguntas.objects.get(id=request.POST.get("dni"))
+        newPlant= Plantilla()
+        #newPlant.id_banco=banco.dni
+        newPlant.setdni(request.POST['id_plant'])
+        newPlant.setenunciado(request.POST['enunciado'])
+        newPlant.save()
+        #return redirect('/crearPlantilla/')
+        return redirect('/erroneas/')
+    else:
+        #return render(request, 'crearPlantilla.html')
+        return render(request, 'crearPlantilla.html')
+
+def setIncorrectas(request):
+    if request.method=="POST":
+        #plant=Plantilla.onjects.get(id=request.POST.get("dni"))
+        newInc1=Incorrecta()
+        #newInc1.id_pregunta=plant.dni
+        newInc1.setrespuesta_incorrecta(request.POST['opc1'])
+        
+        newInc2=Incorrecta()
+        #newInc2.id_pregunta=plant.dni
+        newInc2.setrespuesta_incorrecta(request.POST['opc2'])
+        
+        newInc3=Incorrecta()
+        #newInc3.id_pregunta=plant.dni
+        newInc3.setrespuesta_incorrecta(request.POST['opc3'])
+        newInc4=Incorrecta()
+        #newInc4.id_pregunta=plant.dni
+        newInc4.setrespuesta_incorrecta(request.POST['opc4'])
+        newInc5=Incorrecta()
+        #newInc5.id_pregunta=plant.dni
+        newInc5.setrespuesta_incorrecta(request.POST['opc5'])
+        newInc6=Incorrecta()
+        #newInc6.id_pregunta=plant.dni
+        newInc6.setrespuesta_incorrecta(request.POST['opc6'])
+        newInc7=Incorrecta()
+        #newInc7.id_pregunta=plant.dni
+        newInc7.setrespuesta_incorrecta(request.POST['opc7'])
+        newInc1.save()
+        newInc2.save()
+        newInc3.save()
+        newInc4.save()
+        newInc5.save()
+        newInc6.save()
+        newInc7.save()
+
+        return redirect('/variacion/') 
+    else:
+       return render(request, 'setIncorrectas.html') 
+
+def setVariacion(request, plantilla_id):
+    if request.method=="POST":
+        correcta= Correcta()
+        #Falta la ForeignKey
+        correcta.setenunciado(request.POST['enunciado'])
+        correcta.setrespuesta(request.POST['respuesta'])
+        plantilla=
+        correcta.save()
+        if request.POST.get("crear1"):
+            return redirect('/plantillas/')
+        return redirect('/variacion/')
+    else:
+        return render(request, 'setVariacion.html')
+
 
 def verPlantilla(request):
     return render(request, 'plantillas.html')
