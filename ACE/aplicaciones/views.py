@@ -22,8 +22,8 @@ def crearCurso(request):
         return render(request, 'CrearCurso.html')
 
 def verCurso(request):
-    lista_cursos=Curso.objects.all()
-    return render(request, 'VistaCursos.html', {'lista_cursos': lista_cursos })
+    curso_lista=Curso.objects.all()
+    return render(request, 'VistaCursos.html', {'curso_lista':curso_lista})
 
 def crearGrupo(request):
     if request.method == "POST":
@@ -53,8 +53,7 @@ def crearBanco(request):
         return render(request, 'crearbanco.html')
 
 def verBanco(request, dni):
-    Banco_lista= Banco_preguntas.objects.filter(curso=dni)
-    return render(request, 'seleccionbanco.html', {"Banco_lista":Banco_lista})
+    return render(request, 'seleccionbanco.html')
 
 def crearPlantilla(request):
     if request.method == "POST":

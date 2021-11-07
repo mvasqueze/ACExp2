@@ -1,32 +1,20 @@
-<<<<<<< HEAD
-{%  block content %}
-
-    <h1>Cursos:</h1>
-   
-{% for curso in lista_cursos %}
- <ul>
- 
-<p><input type="radio" name="curso"/><b>Nombre:</b> {{curso.nombre}}  <b>DNI:</b>{{curso.dni}}</p>
-</ul>
-{% endfor %}
-<input type="submit" value="Accceder"/>
-{% endblock %}
-=======
 <!DOCTYPE html>
 <html>
     <head>
         <title> Seleccione el banco de preguntas al que desea acceder </title>
     </head>
     <body>
-        <h1>Selecciona el curso al que quieres acceder:</h1>
+        <h1>De cual curso quieres ver los grupos que tienes:</h1>
             {% for Curso in curso_lista %}
                <h3> <a href="/grupos/{{Curso.dni}}"> <b>Curso: </b> {{Curso.nombre}} {{Curso.dni}} </p> </a> </h3>
-             {% endfor %}
-            <input type="submit" value="Accceder"/>
-            
+             {% endfor %}  
+             
+        <h1>De cual curso quieres ver los bancos que tienes:</h1>
+             {% for Curso in curso_lista %}
+               <h3> <a href="/bancos/{{Curso.dni}}"> <b>Curso: </b> {{Curso.nombre}} {{Curso.dni}} </p> </a> </h3>
+             {% endfor %}            
         <a href="/crearCurso/">
             <input type="button" value="Crear curso(s)"/>
         </a>
     </body>
 </html>
->>>>>>> 056c25368bced70545f318df3f6cacd1af5b56eb
