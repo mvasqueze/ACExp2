@@ -96,12 +96,14 @@ def verIncorrectas(request, plantillaid):
     data["plantillaid"]=plantillaid
     lista_Incorrectas=Incorrecta.objects.filter(id_pregunta=plantillaid)
     data["lista_Incorrectas"]=lista_Incorrectas
-    return render(request,'',{"data":data})
+    return render(request,'setIncorrectas.html',{"data":data})
 
 
 def setIncorrectas(request):
     if request.method=="POST":
         plantilla=Plantilla.objects.get(dni=request.POST["plantillaid"])
+        banco=plantilla.getid_banco()
+        bancoid=banco.getdni()
         newInc1=Incorrecta()
         newInc1.id_pregunta=plantilla
         newInc1.setrespuesta_incorrecta(request.POST['opc1'])
@@ -131,7 +133,7 @@ def setIncorrectas(request):
         newInc6.save()
         newInc7.save()
 
-        return redirect('/plantillas/') 
+        return redirect('/plantillas/'+bancoid) 
     else:
        return render(request, 'setIncorrectas.html') 
 
@@ -144,7 +146,7 @@ def setVariacion(request):
         correcta.setrespuesta(request.POST['respuesta'])
         correcta.save()
         if request.POST.get("crear1"):
-            return redirect('/erroneas/'+request.POST["preguntaid"])
+            return redirect('/listaerroneas/'+request.POST["preguntaid"])
         return redirect('/variacion/'+request.POST["preguntaid"])
     else:
         return render(request, 'setVariacion.html')
@@ -172,7 +174,7 @@ def crearEstudiante(request):
         newestudiante.setestudiante(request.POST["Estudiante"])
         newestudiante.setId_Estudiante(request.POST["Estudiante_ID"])
         newestudiante.save()
-        return redirect('/estudiantes   /'+idgrupo)
+        return redirect('/estudiantes/'+idgrupo)
     else:
         return render(request, 'estudiantes.html')
 

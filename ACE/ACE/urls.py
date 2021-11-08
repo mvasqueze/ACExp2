@@ -18,32 +18,23 @@ from django.urls import path
 from aplicaciones.views import *
 from django.urls.conf import include
 
-urlpatterns = [
+urlpatterns = [ 
     path('admin/', admin.site.urls),
     path('inicio/', inicio),
-    path('cursos/', verCurso,),
+    path('cursos/', verCurso,name="cursos"),
     path('crearCurso/', crearCurso, name="crearCurso"),
     path('bancos/<dni>', verBanco),
     path('crearBanco/', crearBanco, name="crearBanco"),
     path('grupos/<dni>', verGrupo),
-<<<<<<< HEAD
     path('crearGrupo/', crearGrupo,name = "crearGrupo"),
-    path('plantillas/', verPlantilla),
-=======
-    path('crearGrupo/', crearGrupo),
-    path('plantillas/<dni>', verPlantilla),
->>>>>>> mariana
+    path('plantillas/<dni>', verPlantilla, name = "plantillas"),
     path('crearPlantilla/', crearPlantilla, name="crearPlantilla"),
     path('estudiantes/<Grupoid>', estudiantes),
     path('crearExamen/', crearExamen),
-    path('erroneas/', setIncorrectas, name="setIncorrectas"),
+    path('listaerroneas/<plantillaid>', verIncorrectas, name="listaerroneas"),
     path('variacion/<dni>', verVar, name="verVar"),
     path('setVariacion/', setVariacion, name="setVariacion"),
     path('accounts/',include('django.contrib.auth.urls')),
-<<<<<<< HEAD
     path('crearEstudiantes/',crearEstudiante, name="crearEstudiante"),
-=======
-    path('crearEstudiantes/<idcurso>',crearEstudiante, name="crearEstudiante"),
-    path('listaerroneas/<idcurso>',crearEstudiante, name="listaerroneas"),
->>>>>>> mariana
+    path('erroneas/',setIncorrectas, name="crearIncorrectas"),
 ]
