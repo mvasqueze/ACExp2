@@ -93,10 +93,10 @@ def verIncorrectas(request, plantillaid):
     data["plantillaid"]=plantillaid
     lista_Incorrectas=Incorrecta.objects.filter(id_pregunta=plantillaid)
     data["lista_Incorrectas"]=lista_Incorrectas
-    return render(request,'',{"data":data})
+    return render(request,'setIncorrectas.html',{"data":data})
 
 
-def setIncorrectas(request):
+def setIncorrectas(request, dni):
     if request.method=="POST":
         plantilla=Plantilla.objects.get(dni=request.POST["plantillaid"])
         newInc1=Incorrecta()
@@ -127,7 +127,7 @@ def setIncorrectas(request):
         newInc5.save()
         newInc6.save()
         newInc7.save()
-
+        plantillaid= plantilla.getdni()
         return redirect('/plantillas/') 
     else:
        return render(request, 'setIncorrectas.html') 
@@ -141,7 +141,7 @@ def setVariacion(request):
         correcta.setrespuesta(request.POST['respuesta'])
         correcta.save()
         if request.POST.get("crear1"):
-            return redirect('/erroneas/'+request.POST["preguntaid"])
+            return redirect('/listaerroneas/'+request.POST["preguntaid"])
         return redirect('/variacion/'+request.POST["preguntaid"])
     else:
         return render(request, 'setVariacion.html')
