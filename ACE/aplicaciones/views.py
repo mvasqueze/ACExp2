@@ -25,6 +25,7 @@ def verCurso(request):
     curso_lista=Curso.objects.all()
     return render(request, 'VistaCursos.html', {'curso_lista':curso_lista})
 
+
 def crearGrupo(request):
     if request.method == "POST":
         curso=Curso.objects.get(dni=request.POST["cursoid"])
@@ -53,11 +54,7 @@ def crearBanco(request):
         newBanco.setnombre(request.POST["Banco"])
         newBanco.setdni(request.POST["idBanco"])
         newBanco.save()
-        if request.POST.get("CrearU"):
-            return redirect('/crearBanco/')
-        elif request.POST.get("CrearV"):
-            return redirect('/plantillas/')
-        return render(request, 'crearbanco.html',)
+        return redirect('/bancos/'+request.POST["cursoid"])
     else:
         return render(request, 'crearbanco.html')
 
@@ -70,43 +67,61 @@ def verBanco(request, dni):
 
 def crearPlantilla(request):
     if request.method == "POST":
-        #banco= Banco_preguntas.objects.get(id=request.POST.get("dni"))
+        banco= Banco_preguntas.objects.get(dni=request.POST["bancoid"])
         newPlant= Plantilla()
-        #newPlant.id_banco=banco.dni
+        newPlant.id_banco=banco
         newPlant.setdni(request.POST['id_plant'])
         newPlant.setenunciado(request.POST['enunciado'])
         newPlant.save()
         #return redirect('/crearPlantilla/')
-        return redirect('/erroneas/')
+        if request.POST.get("CrearU"):
+            return redirect('/variacion/'+request.POST["id_plant"])
+        elif request.POST.get("CrearV"):
+            return redirect('/plantillas/'+request.POST["bancoid"])
+        return render(request, 'plantillas.html',)
     else:
         #return render(request, 'crearPlantilla.html')
         return render(request, 'crearPlantilla.html')
 
+def verPlantilla(request, dni):
+    plant_lista= Plantilla.objects.filter(id_banco=dni)
+    data={}
+    data["plant_lista"]=plant_lista
+    data["banco"]=dni
+    return render(request, 'plantillas.html',{"data":data})
+
+
+def verIncorrectas(request, plantillaid):
+    data={}
+    data["plantillaid"]=plantillaid
+    lista_Incorrectas=Incorrecta.objects.filter(id_pregunta=plantillaid)
+    data["lista_Incorrectas"]=lista_Incorrectas
+    return render(request,'',{"data":data})
+
+
 def setIncorrectas(request):
     if request.method=="POST":
-        #plant=Plantilla.onjects.get(id=request.POST.get("dni"))
+        plantilla=Plantilla.objects.get(dni=request.POST["plantillaid"])
         newInc1=Incorrecta()
-        #newInc1.id_pregunta=plant.dni
+        newInc1.id_pregunta=plantilla
         newInc1.setrespuesta_incorrecta(request.POST['opc1'])
-        
         newInc2=Incorrecta()
-        #newInc2.id_pregunta=plant.dni
+        newInc2.id_pregunta=plantilla
         newInc2.setrespuesta_incorrecta(request.POST['opc2'])
-        
         newInc3=Incorrecta()
-        #newInc3.id_pregunta=plant.dni
+        newInc3.id_pregunta=plantilla
         newInc3.setrespuesta_incorrecta(request.POST['opc3'])
         newInc4=Incorrecta()
-        #newInc4.id_pregunta=plant.dni
+        newInc4.id_pregunta=plantilla
         newInc4.setrespuesta_incorrecta(request.POST['opc4'])
         newInc5=Incorrecta()
-        #newInc5.id_pregunta=plant.dni
+        newInc5.id_pregunta=plantilla
         newInc5.setrespuesta_incorrecta(request.POST['opc5'])
         newInc6=Incorrecta()
-        #newInc6.id_pregunta=plant.dni
+        newInc6.id_pregunta=plantilla
         newInc6.setrespuesta_incorrecta(request.POST['opc6'])
         newInc7=Incorrecta()
-        #newInc7.id_pregunta=plant.dni
+        newInc7.id_pregunta=plantilla
         newInc7.setrespuesta_incorrecta(request.POST['opc7'])
         newInc1.save()
         newInc2.save()
@@ -116,26 +131,30 @@ def setIncorrectas(request):
         newInc6.save()
         newInc7.save()
 
-        return redirect('/variacion/') 
+        return redirect('/plantillas/') 
     else:
        return render(request, 'setIncorrectas.html') 
 
 def setVariacion(request):
     if request.method=="POST":
+        plant= Plantilla.objects.get(dni=request.POST["preguntaid"])
         correcta= Correcta()
-        #Falta la ForeignKey
+        correcta.id_pregunta=plant
         correcta.setenunciado(request.POST['enunciado'])
         correcta.setrespuesta(request.POST['respuesta'])
         correcta.save()
-        if request.POST.get("crearV"):
-            return redirect('/variacion/')
-        return redirect('/plantillas/')
+        if request.POST.get("crear1"):
+            return redirect('/erroneas/'+request.POST["preguntaid"])
+        return redirect('/variacion/'+request.POST["preguntaid"])
     else:
         return render(request, 'setVariacion.html')
 
-
-def verPlantilla(request):
-    return render(request, 'plantillas.html')
+def verVar(request, dni):
+    var_lista=Correcta.objects.filter(id_pregunta=dni)
+    data={}
+    data["lista_correctas"]=var_lista
+    data["id_pregunta"]=dni
+    return render(request, 'setVariacion.html',{"data":data})
 
 def estudiantes(request,Grupoid):
     data={}

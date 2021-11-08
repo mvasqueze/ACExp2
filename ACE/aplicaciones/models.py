@@ -119,7 +119,7 @@ class Banco_preguntas(models.Model):
 
 class Plantilla(models.Model):
     dni=models.CharField(max_length=10,primary_key=True)
-    #id_banco=models.ForeignKey(Banco_preguntas,null=False, on_delete=models.CASCADE)
+    id_banco=models.ForeignKey(Banco_preguntas,null=False, on_delete=models.CASCADE)
     enunciado=models.CharField(max_length=500)
 
     def __str__(self):
@@ -144,11 +144,8 @@ class Plantilla(models.Model):
     def setenunciado(self, enunciado):
         self.enunciado=enunciado
 
-    def setVariaciones(self, variaciones):
-        self.variaciones=variaciones
-
 class Correcta (models.Model):
-    #id_pregunta=models.ForeignKey(Plantilla,null=False, on_delete=models.CASCADE)
+    id_pregunta=models.ForeignKey(Plantilla,null=False, on_delete=models.CASCADE, default='0')
     enunciado=models.CharField(max_length=50)
     respuesta=models.CharField(max_length=50)
 
@@ -169,8 +166,8 @@ class Correcta (models.Model):
 
     
 class Incorrecta (models.Model):
-    #id_pregunta=models.ForeignKey("Plantilla",null=False, on_delete=models.CASCADE)
-    respuesta_equivocada=models.CharField(max_length=50,  blank=True, default='')
+    id_pregunta=models.ForeignKey("Plantilla",null=False, on_delete=models.CASCADE)
+    respuesta_equivocada=models.CharField(max_length=50)
     def getid_pregunta(self):
         return self.id_pregunta
 
