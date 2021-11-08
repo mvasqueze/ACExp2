@@ -144,9 +144,6 @@ class Plantilla(models.Model):
     def setenunciado(self, enunciado):
         self.enunciado=enunciado
 
-    def setVariaciones(self, variaciones):
-        self.variaciones=variaciones
-
 class Correcta (models.Model):
     id_pregunta=models.ForeignKey(Plantilla,null=False, on_delete=models.CASCADE, default='0')
     enunciado=models.CharField(max_length=50)
