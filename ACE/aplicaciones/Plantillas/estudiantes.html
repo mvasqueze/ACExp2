@@ -1,0 +1,23 @@
+<!-- Lista de estudiantes de un grupo -->
+{%  block content %}
+
+    <h1>Estudiantes:</h1>
+   
+{% for estudiante in data.estudiante_lista %}
+ <ul>
+ 
+<b>Nombre:</b> {{estudiante.nombre_estudiante}}  <b>DNI:</b>{{estudiante.id_estudiante}}
+</ul>
+{% endfor %}
+
+<h1> Estudiante a crear </h1>
+        <form method="POST" action="{%url 'crearEstudiante'%}"> {% csrf_token %}
+            <div class="form-group">
+                <p> Nombre del Estudiante: <input type="text" name="Estudiante"/></p>
+                <p> Identificacion del Estudiante: <input type="text" name="Estudiante_ID"/></p>
+                <input type="hidden" name="Grupoid" value="{{data.Grupoid}}" />
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+          </form>
+
+{% endblock %}
