@@ -2,7 +2,8 @@
 <html>
 <h1>Crea las preguntas que aparecerán en las preguntas que crees a apartir de esta plantilla</h1>
 <h2>Ten en cuenta que mientras más ingreses, mayor variedad tendrán tus preguntas</h2>
-<form  method="POST" action="{% url 'setIncorrectas' %}"> {% csrf_token %} 
+<form  method="POST" action="{% url 'crearIncorrectas'%}"> {% csrf_token %} 
+        <input type="hidden" name="plantillaid" value="{{data.plantillaid}}" />
 <div>
         <label for="opc1">Incorrecta 1 (Obligatoria):</label>
         <input type="text" id="opc1" name="opc1" required>

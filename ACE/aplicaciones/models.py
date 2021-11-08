@@ -28,7 +28,7 @@ class Curso(models.Model):
    
 
 class Grupos(models.Model):
-    dni=models.CharField(max_length=10,primary_key=True)
+    dni=models.AutoField(primary_key=True)
     nombre = models.CharField(max_length=50)
     curso= models.ForeignKey(Curso,null=False, on_delete=models.CASCADE)
     def __str__(self):
@@ -79,9 +79,9 @@ class Grupo_estudiantes(models.Model):
     dni=models.AutoField(max_length=10,primary_key=True)
     id_estudiante=models.CharField(max_length=10)
     nombre_estudiante=models.CharField(max_length=20)
-    id_curso=models.ForeignKey(Grupos, null=False, on_delete=CASCADE)
+    id_grupo=models.ForeignKey(Grupos, null=False, on_delete=CASCADE)
     def __str__(self):
-        texto = "Estudainte: {0}, Curso:{1}"
+        texto = "Estudainte: {0}, Id:{1}"
         return texto.format(self.nombre_estudiante,self.id_estudiante)
     def getdni(self):
         return self.dni

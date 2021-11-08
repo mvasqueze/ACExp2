@@ -4,11 +4,11 @@
     <body>
         <h1> Selecciona la plantilla a la que quieres accecer</h1>
             {% for plant in data.plant_lista %}
-               <h3> <a href="/variacion/{{plant.dni}}"> <b>Plantilla: </b>  {{plant.dni}}     {{plant.enunciado}}</p> </a> </h3>
+               <h3> <a href="/variacion/{{plant.dni}}"> <b>Plantilla: </b> Id: {{plant.dni}}  <br>  Enunciado {{plant.enunciado}}</p> </a> </h3>
              {% endfor %}
         
         <h1> Plantilla a crear </h1>
-        <form  method="POST" action="{% url 'crearPlantilla' {{data.dni}} %}"> {% csrf_token %} 
+        <form  method="POST" action="{% url 'crearPlantilla' %}"> {% csrf_token %} 
     <div class="form-group">
         <p>Código de la plantilla:<input type="text" id="id_plant" name="id_plant"></p>
         <p>Enunciado:<input type="text" id="enunciado" name="enunciado"></p>

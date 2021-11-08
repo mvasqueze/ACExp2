@@ -18,23 +18,32 @@ from django.urls import path
 from aplicaciones.views import *
 from django.urls.conf import include
 
-urlpatterns = [
+urlpatterns = [ 
     path('admin/', admin.site.urls),
     path('inicio/', inicio),
-    path('cursos/', verCurso,),
+    path('cursos/', verCurso,name="cursos"),
     path('crearCurso/', crearCurso, name="crearCurso"),
     path('bancos/<dni>', verBanco),
     path('crearBanco/', crearBanco, name="crearBanco"),
     path('grupos/<dni>', verGrupo),
-    path('crearGrupo/', crearGrupo),
-    path('plantillas/<dni>', verPlantilla),
+    path('crearGrupo/', crearGrupo,name = "crearGrupo"),
+    path('plantillas/<dni>', verPlantilla, name = "plantillas"),
     path('crearPlantilla/', crearPlantilla, name="crearPlantilla"),
-    path('estudiantes/', estudiantes),
+    path('estudiantes/<Grupoid>', estudiantes),
     path('crearExamen/', crearExamen),
+<<<<<<< HEAD
     path('erroneas/<dni>', setIncorrectas, name="setIncorrectas"),
     path('variacion/<dni>', verVar, name="verVar"),
     path('setVariacion/', setVariacion, name="setVariacion"),
     path('accounts/',include('django.contrib.auth.urls')),
     path('crearEstudiantes/<idcurso>',crearEstudiante, name="crearEstudiante"),
     path('listaerroneas/<plantillaid>',verIncorrectas, name="listaerroneas"),
+=======
+    path('listaerroneas/<plantillaid>', verIncorrectas, name="listaerroneas"),
+    path('variacion/<dni>', verVar, name="verVar"),
+    path('setVariacion/', setVariacion, name="setVariacion"),
+    path('accounts/',include('django.contrib.auth.urls')),
+    path('crearEstudiantes/',crearEstudiante, name="crearEstudiante"),
+    path('erroneas/',setIncorrectas, name="crearIncorrectas"),
+>>>>>>> master
 ]
