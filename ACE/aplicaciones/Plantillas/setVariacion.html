@@ -1,16 +1,23 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title> Configura la variación de la plantilla </title>
-    </head>
     <body>
+
+        <h1>Estas son las variaciones que has creado:</h1>
+       {% for variacion in data.lista_correctas %}
+            <h3><b>Variacion: </b>{{variacion.dni}}  {{variacion.enunciado}} <br> <b>Respuesta: </b> {{variacion.respuesta}}</p> </a> </h3>
+       {% endfor %}
+
+        <h1>Variación a crear:</h1>
         <form  method="POST" action="{% url 'setVariacion' %}"> {% csrf_token %} 
-            <p> Enunciado (relleno): <input type="text" name="enunciado"/></p>
-            <p> Respuesta correcta: <input type="text" name="respuesta"/></p>
+        <div class="form-group">
+            <p> Enunciado (relleno): <input type="text" id="enunciado" name="enunciado"/></p>
+            <p> Respuesta correcta: <input type="text" id="respuesta" name="respuesta"/></p>
+             <input type="hidden" name="preguntaid" value="{{data.id_pregunta}}" />
             <input type="submit" value="Crear" name="crear1"/>
             <a action="{% url 'setVariacion' %}">
                 <input type="submit" value="Guardar y añadir otro" name="crearV"/>
             </a>
+        </div>
         </form>
     </body>
 </html>
