@@ -4,9 +4,15 @@
         <title> Seleccione el banco de preguntas al que desea acceder </title>
     </head>
     <body>
+<<<<<<< HEAD
         <h1> Selecciona banco al que quieres acceder </h1>
             {% for Banco in data.Banco_lista %}
                <h3> <a href="/bancos/{{Banco.dni}}"> <b>Banco: </b> {{Banco.nombre}} {{Banco.dni}} </p> </a> </h3>
+=======
+        <h1> Selecciona el grupo al que quieres acceder </h1>
+            {% for Banco in banco_lista %}
+               <h3> <a href="/estudiantes/"> <b>Banco: </b> {{Banco.nombre}} {{Banco.dni}} </p> </a> </h3>
+>>>>>>> origin/mariana
              {% endfor %}
         </form>
         {% for Banco in Banco_lista %}
