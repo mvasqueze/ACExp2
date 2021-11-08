@@ -27,20 +27,23 @@ def verCurso(request):
 
 def crearGrupo(request):
     if request.method == "POST":
+        curso=Curso.objects.get(dni=request.POST["cursoid"])
+        idcurso=request.POST["cursoid"]
         newGrupo= Grupos()
-        newGrupo.setNombre(request.POST["Grupos"])
-        newGrupo.setDni(request.POST["idGrupo"])
+        newGrupo.curso=curso
+        newGrupo.setNombre(request.POST["grupo"])
         newGrupo.save()
-        return render(request, 'creargrupo.html')
+        return redirect('/grupos/'+idcurso)
     else:
-        return render(request, 'creargrupo.html')
+        return render(request,'selecciongrupo.html')
     
 
 def verGrupo(request, dni):
     grupo_lista=Grupos.objects.filter(curso=dni)
     data={}
+    data["grupo_lista"]=grupo_lista
     data["curso"]=dni
-    return render(request, 'selecciongrupo.html', {'grupo_lista':grupo_lista},{"data":data})
+    return render(request, 'selecciongrupo.html',{"data":data})
 
 def crearBanco(request):
     if request.method == "POST":
@@ -134,20 +137,25 @@ def setVariacion(request):
 def verPlantilla(request):
     return render(request, 'plantillas.html')
 
-def estudiantes(request,cursoid):
-    estudiante_lista=Grupo_estudiantes.objects.filter(id_curso=cursoid)
-    return render(request, 'estudiantes.html', {'estudiante_lista': estudiante_lista })
+def estudiantes(request,Grupoid):
+    data={}
+    data["Grupoid"]=Grupoid
+    estudiante_lista=Grupo_estudiantes.objects.filter(id_grupo=Grupoid)
+    data["estudiante_lista"]=estudiante_lista
+    return render(request, 'estudiantes.html', {'data': data })
 
-def crearEstudiante(request,cursoid):
+def crearEstudiante(request):
     if request.method == "POST":
-        curso=Curso.objects.get(dni=cursoid)
-        newBanco= Grupo_estudiantes()
-        newBanco.setestudiante(request.POST["Nombre"])
-        newBanco.setId_Estudiante(request.POST["idEstudiante"])
-        newBanco.save()
-        return redirect(request, '')
+        grupo=Grupos.objects.get(dni=request.POST["Grupoid"])
+        idgrupo=request.POST["Grupoid"]
+        newestudiante= Grupo_estudiantes()
+        newestudiante.id_grupo=grupo
+        newestudiante.setestudiante(request.POST["Estudiante"])
+        newestudiante.setId_Estudiante(request.POST["Estudiante_ID"])
+        newestudiante.save()
+        return redirect('/estudiantes   /'+idgrupo)
     else:
-        return render(request, 'crearEstudiante.html')
+        return render(request, 'estudiantes.html')
 
 def crearExamen(request):
     return render(request, 'crearExamenes.html')
