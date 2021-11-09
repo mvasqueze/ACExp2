@@ -3,7 +3,7 @@ from aplicaciones.models import Grupo_estudiantes
 from aplicaciones.models import Banco_preguntas
 from aplicaciones.models import Curso, Grupos
 from aplicaciones.models import Incorrecta, Plantilla, Correcta
-
+from reportlab.pdfgen import canvas
 # Create your views here.
 def inicio(request):
     return render(request, 'Inicio.html')
@@ -64,6 +64,11 @@ def verBanco(request, dni):
     data["Banco_lista"]=Banco_lista
     data["curso"]=dni
     return render(request, 'seleccionbanco.html',{"data":data})
+
+def deletecurso(request):
+    curso=Curso.objects.get(dni=request.POST["cursoidborrar"])
+    curso.delete()
+    return redirect('/cursos/')
 
 def crearPlantilla(request):
     if request.method == "POST":
@@ -178,5 +183,32 @@ def crearEstudiante(request):
     else:
         return render(request, 'estudiantes.html')
 
-def crearExamen(request):
+def crearExamen(request,idcurso):
+    
     return render(request, 'crearExamenes.html')
+
+
+def deletebanco(request,idbanco):
+    banco=Banco_preguntas.objects.get(dni=idbanco)
+    banco.delete()
+    return redirect('/bancos/'+request.POST["cursoid"])
+
+def deleteestudiante(request,idestudiante):
+    idgrupo=request.POST["Grupoid"]
+    estudiante=Grupo_estudiantes.objects.get(dni=idestudiante)
+    estudiante.delete()
+    return redirect('/grupos/'+idgrupo)
+
+def deletegrupo(request,idgrupo):
+    idcurso=request.POST["cursoid"]
+    grupo=Grupos.objects.get(dni=idgrupo)
+    grupo.delete()
+    return redirect('/grupos/'+idcurso)
+
+def deleteestudiante(request,idestudiante):
+    idgrupo=request.POST["Grupoid"]
+    estudiante=Grupo_estudiantes.objects.get(dni=idestudiante)
+    estudiante.delete()
+    return redirect('/grupos/'+idgrupo)
+
+

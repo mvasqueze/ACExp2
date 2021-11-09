@@ -30,11 +30,12 @@ urlpatterns = [
     path('plantillas/<dni>', verPlantilla, name = "plantillas"),
     path('crearPlantilla/', crearPlantilla, name="crearPlantilla"),
     path('estudiantes/<Grupoid>', estudiantes),
-    path('crearExamen/', crearExamen),
+    path('crearExamen/<idcurso>', crearExamen, name="crearExamen"),
     path('listaerroneas/<plantillaid>', verIncorrectas, name="listaerroneas"),
     path('variacion/<dni>', verVar, name="verVar"),
     path('setVariacion/', setVariacion, name="setVariacion"),
     path('accounts/',include('django.contrib.auth.urls')),
     path('crearEstudiantes/',crearEstudiante, name="crearEstudiante"),
     path('erroneas/',setIncorrectas, name="crearIncorrectas"),
+    path('curso/deleteCurso/',deletecurso,name="deleteCurso")
 ]

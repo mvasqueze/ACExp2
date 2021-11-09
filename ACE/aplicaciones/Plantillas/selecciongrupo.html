@@ -10,7 +10,7 @@
             {% endfor %}
         <h1> Elige a que grupo le quieres crear examenes </h1>
             {% for Grupo in data.grupo_lista %}
-               <h3> <a href="/crearExamen/"> <b>Grupo: </b> {{Grupo.nombre}} {{Grupo.dni}} </p> </a> </h3>
+               <h3> <a href="/crearExamen/{{Grupo.getDni }}"> <b>Grupo: </b> {{Grupo.nombre}} {{Grupo.dni}} </p> </a> </h3>
             {% endfor %}
         <a href="/crearGrupo/">
             <input type="button" value="Crear grupo(s)"/>
