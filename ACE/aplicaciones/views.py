@@ -65,6 +65,13 @@ def verBanco(request, dni):
     data["curso"]=dni
     return render(request, 'seleccionbanco.html',{"data":data})
 
+def deletebanco(request):
+    banco= Banco_preguntas.objects.get(dni=request.POST["bancoid"])
+    banco.delete()
+    curso=banco.getid_curso()
+    cursoid=curso.getDNI()
+    return redirect('/bancos/'+cursoid)
+
 def deletecurso(request):
     curso=Curso.objects.get(dni=request.POST["cursoidborrar"])
     curso.delete()
@@ -188,16 +195,7 @@ def crearExamen(request,idcurso):
     return render(request, 'crearExamenes.html')
 
 
-def deletebanco(request,idbanco):
-    banco=Banco_preguntas.objects.get(dni=idbanco)
-    banco.delete()
-    return redirect('/bancos/'+request.POST["cursoid"])
 
-def deleteestudiante(request,idestudiante):
-    idgrupo=request.POST["Grupoid"]
-    estudiante=Grupo_estudiantes.objects.get(dni=idestudiante)
-    estudiante.delete()
-    return redirect('/grupos/'+idgrupo)
 
 def deletegrupo(request,idgrupo):
     idcurso=request.POST["cursoid"]

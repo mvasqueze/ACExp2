@@ -37,5 +37,6 @@ urlpatterns = [
     path('accounts/',include('django.contrib.auth.urls')),
     path('crearEstudiantes/',crearEstudiante, name="crearEstudiante"),
     path('erroneas/',setIncorrectas, name="crearIncorrectas"),
-    path('curso/deleteCurso/',deletecurso,name="deleteCurso")
+    path('curso/deleteCurso/',deletecurso,name="deleteCurso"),
+    path('curso/deletebanco/',deletebanco,name="deletebanco"),
 ]
