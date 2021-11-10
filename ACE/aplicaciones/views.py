@@ -77,6 +77,11 @@ def deletecurso(request):
     curso.delete()
     return redirect('/cursos/')
 
+def deletegrupo(request):
+    grupo=Grupos.objects.get(dni=idgrupo)
+    grupo.delete()
+    return redirect('/grupos/'+idcurso)
+
 def crearPlantilla(request):
     if request.method == "POST":
         banco= Banco_preguntas.objects.get(dni=request.POST["bancoid"])
@@ -193,15 +198,6 @@ def crearEstudiante(request):
 def crearExamen(request,idcurso):
     
     return render(request, 'crearExamenes.html')
-
-
-
-
-def deletegrupo(request,idgrupo):
-    idcurso=request.POST["cursoid"]
-    grupo=Grupos.objects.get(dni=idgrupo)
-    grupo.delete()
-    return redirect('/grupos/'+idcurso)
 
 def deleteestudiante(request,idestudiante):
     idgrupo=request.POST["Grupoid"]
