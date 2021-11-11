@@ -26,13 +26,8 @@ urlpatterns = [
     path('bancos/<dni>', verBanco),
     path('crearBanco/', crearBanco, name="crearBanco"),
     path('grupos/<dni>', verGrupo),
-<<<<<<< HEAD
     path('crearGrupo/', crearGrupo,name = "crearGrupo"),
     path('plantillas/', verPlantilla),
-=======
-    path('crearGrupo/', crearGrupo),
-    path('plantillas/<dni>', verPlantilla),
->>>>>>> mariana
     path('crearPlantilla/', crearPlantilla, name="crearPlantilla"),
     path('estudiantes/<Grupoid>', estudiantes),
     path('crearExamen/', crearExamen),
@@ -40,10 +35,5 @@ urlpatterns = [
     path('variacion/<dni>', verVar, name="verVar"),
     path('setVariacion/', setVariacion, name="setVariacion"),
     path('accounts/',include('django.contrib.auth.urls')),
-<<<<<<< HEAD
     path('crearEstudiantes/',crearEstudiante, name="crearEstudiante"),
-=======
-    path('crearEstudiantes/<idcurso>',crearEstudiante, name="crearEstudiante"),
-    path('listaerroneas/<idcurso>',crearEstudiante, name="listaerroneas"),
->>>>>>> mariana
 ]
