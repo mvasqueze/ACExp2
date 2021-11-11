@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html>
     <head>
@@ -25,4 +26,35 @@
             </div>
           </form>
     </body>
+=======
+<!DOCTYPE html>
+<html>
+    <head>
+        <title> Selección grupo </title>
+    </head>
+    <body>
+        <h1> Elige de que grupo quieres ver los estudiantes </h1>
+            {% for Grupo in data.grupo_lista %}
+               <h3> <a href="/estudiantes/{{Grupo.getDni }}"> <b>Grupo: </b> {{Grupo.nombre}} {{Grupo.dni}} </p> </a> </h3>
+            {% endfor %}
+        <h1> Elige a que grupo le quieres crear examenes </h1>
+            {% for Grupo in data.grupo_lista %}
+               <h3> <a href="/crearExamen/{{Grupo.getDni }}"> <b>Grupo: </b> {{Grupo.nombre}} {{Grupo.dni}} </p> </a> </h3>
+            {% endfor %}
+        <h1> grupo a crear </h1>
+        <form method="POST" action="{%url 'crearGrupo'%}">
+            {% csrf_token %}
+            <div class="form-group">
+                <p> Nombre del grupo: <input type="text" name="grupo"/></p>
+                <input type="hidden" name="cursoid" value="{{data.curso}}" />
+            </div>
+          </form>
+        </form>
+        <form method="POST" action="{%url 'deleteCurso'%} ">
+            {% csrf_token %}
+            <input type="hidden" name="cursoidborrar" value="{{data.curso}}" />
+            <button type="submit" onclick="return confirm('¿Estas seguro que quieres eliminar el curso?');" class="submit-delete">Borrar Curso al que pertenece</button>
+        </form>
+    </body>
+>>>>>>> dd0294c15a0544b1df4914ef825671f313c16af1
 </html>

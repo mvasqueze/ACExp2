@@ -16,7 +16,11 @@
         <input type="submit" name="CrearU" value="Crear">
         <input type="submit" name="CrearV" value="Crear y añadir otra">
     </div>
-
+</form>
+<form method="POST" action="{%url 'deletebanco'%} ">
+    {% csrf_token %}
+    <input type="hidden" name="bancoid" value="{{data.banco}}" />
+    <button type="submit" onclick="return confirm('¿Estas seguro que quieres eliminar el curso?');" class="submit-delete">Borrar Banco al que pertenece</button>
 </form>
     </body>
 </html>
