@@ -219,10 +219,28 @@ def crearEstudiante(request):
     else:
         return render(request, 'estudiantes.html')
 
-def crearExamen(request,idcurso):
+def verExamen(request,idcurso):
+    data={}
+    data["idcurso"]=idcurso
+    return render(request, 'crearExamenes.html',{"data":data})
+
+def crearExamen(request):
+    #añadir lo del pdf
+    idbanco=request.POST["Banco_examen"]
+    plantillas=Plantilla.objects.filter(id_banco=idbanco)
+    #coger cantidad que decidamos de plantillas de manera al azar y guardarlas en una lista o diccionario
+    #declarar un string que sea igual a "enunciado" de la plantilla
+    #conseguir una opcion de la plantilla de manera al azar (recomendacion pedir todas las relacionadas con la plantilla que se esta trabajando y usar un metodo que coja una al azar)
+    #declarar un string que sea igual a "enunciado" de la opcion obtenida
+    #declarar un string que sea igual a "respuesta" de la opcion obtenida
+    #pedir la cantidad especifica de incorrectas que se van a usar
+    #pedir todas las incorrectas relacionadas con esa plantilla 
+    #almacenar la cantidad decidida de incorrectas elegidas al azar en una lista o diccionario
+    #crear un string que junte los dos enunciados 
+    #añadir el string de los dos enunciados +  la respuesta correcta en otro pdf
+    #añadir al pdf del examen el enunciado combinado
+    #añadir de forma aletoria las incorrectas y las correctas de la pregunta
+    #repetir con las demas plantillas
+    #repetir con todos los estudiantes del grupo seleccionado
+    return(redirect)
     
-    return render(request, 'crearExamenes.html')
-
-
-
-
