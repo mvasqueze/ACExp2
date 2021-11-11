@@ -3,7 +3,7 @@ from aplicaciones.models import Grupo_estudiantes
 from aplicaciones.models import Banco_preguntas
 from aplicaciones.models import Curso, Grupos
 from aplicaciones.models import Incorrecta, Plantilla, Correcta
-
+from reportlab.pdfgen import canvas
 # Create your views here.
 def inicio(request):
     return render(request, 'Inicio.html')
@@ -65,6 +65,47 @@ def verBanco(request, dni):
     data["curso"]=dni
     return render(request, 'seleccionbanco.html',{"data":data})
 
+def deletebanco(request):
+    banco= Banco_preguntas.objects.get(dni=request.POST["bancoid"])
+    banco.delete()
+    curso=banco.getid_curso()
+    cursoid=curso.getDNI()
+    return redirect('/bancos/'+cursoid)
+
+def deletecurso(request):
+    curso=Curso.objects.get(dni=request.POST["cursoidborrar"])
+    curso.delete()
+    return redirect('/cursos/')
+
+def deletegrupo(request):
+    grupo=Grupos.objects.get(dni=request.POST["Grupoidborrar"])
+    curso=grupo.getCurso()
+    cursoid=curso.getDNI()
+    grupo.delete()
+    return redirect('/grupos/'+cursoid)
+
+def deleteestudiante(request):
+    grupo=request.POST["Grupo"]
+    dniEstudiante=request.POST["Estudiante_ID_borrar"]
+    estudiante=Grupo_estudiantes.objects.get(id_estudiante=dniEstudiante)
+    estudiante.delete()
+    return redirect('/estudiantes/'+grupo)
+
+def deletevariacion(request):
+    grupo=request.POST["Grupo"]
+    dniEstudiante=request.POST["Estudiante_ID_borrar"]
+    estudiante=Grupo_estudiantes.objects.get(id_estudiante=dniEstudiante)
+    estudiante.delete()
+    return redirect('/estudiantes/'+grupo)
+
+def deleteplantilla(request):
+    preguntaid=request.POST["preguntaid"]
+    plantilla=Plantilla.objects.get(dni=preguntaid)
+    Banco=plantilla.getid_banco()
+    idbanco=Banco.getdni()
+    plantilla.delete()
+    return redirect('/plantillas/'+idbanco)
+
 def crearPlantilla(request):
     if request.method == "POST":
         banco= Banco_preguntas.objects.get(dni=request.POST["bancoid"])
@@ -96,12 +137,14 @@ def verIncorrectas(request, plantillaid):
     data["plantillaid"]=plantillaid
     lista_Incorrectas=Incorrecta.objects.filter(id_pregunta=plantillaid)
     data["lista_Incorrectas"]=lista_Incorrectas
-    return render(request,'',{"data":data})
+    return render(request,'setIncorrectas.html',{"data":data})
 
 
 def setIncorrectas(request):
     if request.method=="POST":
         plantilla=Plantilla.objects.get(dni=request.POST["plantillaid"])
+        banco=plantilla.getid_banco()
+        bancoid=banco.getdni()
         newInc1=Incorrecta()
         newInc1.id_pregunta=plantilla
         newInc1.setrespuesta_incorrecta(request.POST['opc1'])
@@ -131,7 +174,7 @@ def setIncorrectas(request):
         newInc6.save()
         newInc7.save()
 
-        return redirect('/plantillas/') 
+        return redirect('/plantillas/'+bancoid) 
     else:
        return render(request, 'setIncorrectas.html') 
 
@@ -144,7 +187,7 @@ def setVariacion(request):
         correcta.setrespuesta(request.POST['respuesta'])
         correcta.save()
         if request.POST.get("crear1"):
-            return redirect('/erroneas/'+request.POST["preguntaid"])
+            return redirect('/listaerroneas/'+request.POST["preguntaid"])
         return redirect('/variacion/'+request.POST["preguntaid"])
     else:
         return render(request, 'setVariacion.html')
@@ -172,9 +215,32 @@ def crearEstudiante(request):
         newestudiante.setestudiante(request.POST["Estudiante"])
         newestudiante.setId_Estudiante(request.POST["Estudiante_ID"])
         newestudiante.save()
-        return redirect('/estudiantes   /'+idgrupo)
+        return redirect('/estudiantes/'+idgrupo)
     else:
         return render(request, 'estudiantes.html')
 
+def verExamen(request,idcurso):
+    data={}
+    data["idcurso"]=idcurso
+    return render(request, 'crearExamenes.html',{"data":data})
+
 def crearExamen(request):
-    return render(request, 'crearExamenes.html')
+    #añadir lo del pdf
+    idbanco=request.POST["Banco_examen"]
+    plantillas=Plantilla.objects.filter(id_banco=idbanco)
+    #coger cantidad que decidamos de plantillas de manera al azar y guardarlas en una lista o diccionario
+    #declarar un string que sea igual a "enunciado" de la plantilla
+    #conseguir una opcion de la plantilla de manera al azar (recomendacion pedir todas las relacionadas con la plantilla que se esta trabajando y usar un metodo que coja una al azar)
+    #declarar un string que sea igual a "enunciado" de la opcion obtenida
+    #declarar un string que sea igual a "respuesta" de la opcion obtenida
+    #pedir la cantidad especifica de incorrectas que se van a usar
+    #pedir todas las incorrectas relacionadas con esa plantilla 
+    #almacenar la cantidad decidida de incorrectas elegidas al azar en una lista o diccionario
+    #crear un string que junte los dos enunciados 
+    #añadir el string de los dos enunciados +  la respuesta correcta en otro pdf
+    #añadir al pdf del examen el enunciado combinado
+    #añadir de forma aletoria las incorrectas y las correctas de la pregunta
+    #repetir con las demas plantillas
+    #repetir con todos los estudiantes del grupo seleccionado
+    return(redirect)
+    
