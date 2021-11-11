@@ -78,9 +78,33 @@ def deletecurso(request):
     return redirect('/cursos/')
 
 def deletegrupo(request):
-    grupo=Grupos.objects.get(dni=idgrupo)
+    grupo=Grupos.objects.get(dni=request.POST["Grupoidborrar"])
+    curso=grupo.getCurso()
+    cursoid=curso.getDNI()
     grupo.delete()
-    return redirect('/grupos/'+idcurso)
+    return redirect('/grupos/'+cursoid)
+
+def deleteestudiante(request):
+    grupo=request.POST["Grupo"]
+    dniEstudiante=request.POST["Estudiante_ID_borrar"]
+    estudiante=Grupo_estudiantes.objects.get(id_estudiante=dniEstudiante)
+    estudiante.delete()
+    return redirect('/estudiantes/'+grupo)
+
+def deletevariacion(request):
+    grupo=request.POST["Grupo"]
+    dniEstudiante=request.POST["Estudiante_ID_borrar"]
+    estudiante=Grupo_estudiantes.objects.get(id_estudiante=dniEstudiante)
+    estudiante.delete()
+    return redirect('/estudiantes/'+grupo)
+
+def deleteplantilla(request):
+    preguntaid=request.POST["preguntaid"]
+    plantilla=Plantilla.objects.get(dni=preguntaid)
+    Banco=plantilla.getid_banco()
+    idbanco=Banco.getdni()
+    plantilla.delete()
+    return redirect('/plantillas/'+idbanco)
 
 def crearPlantilla(request):
     if request.method == "POST":
@@ -199,10 +223,6 @@ def crearExamen(request,idcurso):
     
     return render(request, 'crearExamenes.html')
 
-def deleteestudiante(request,idestudiante):
-    idgrupo=request.POST["Grupoid"]
-    estudiante=Grupo_estudiantes.objects.get(dni=idestudiante)
-    estudiante.delete()
-    return redirect('/grupos/'+idgrupo)
+
 
 

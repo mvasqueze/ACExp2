@@ -39,4 +39,7 @@ urlpatterns = [
     path('erroneas/',setIncorrectas, name="crearIncorrectas"),
     path('curso/deleteCurso/',deletecurso,name="deleteCurso"),
     path('curso/deletebanco/',deletebanco,name="deletebanco"),
+    path('curso/deletegrupo/',deletegrupo,name="deletegrupo"),
+    path('curso/deleteplantilla/',deleteplantilla,name="deleteplantilla"),
+    path('curso/deleteestudiante/',deleteestudiante,name="deleteestudiante"),
 ]
