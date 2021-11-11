@@ -60,14 +60,10 @@ def crearBanco(request):
 
 def verBanco(request, dni):
     Banco_lista= Banco_preguntas.objects.filter(curso=dni)
-<<<<<<< HEAD
-    return render(request, 'seleccionbanco.html', {"Banco_lista":Banco_lista})
-=======
     data={}
     data["Banco_lista"]=Banco_lista
     data["curso"]=dni
     return render(request, 'seleccionbanco.html',{"data":data})
->>>>>>> a463c31a5fed905b41f99004c60c829a7cf9b641
 
 def deletebanco(request):
     banco= Banco_preguntas.objects.get(dni=request.POST["bancoid"])
