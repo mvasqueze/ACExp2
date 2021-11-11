@@ -227,6 +227,7 @@ def verExamen(request,idcurso):
 def crearExamen(request):
     #añadir lo del pdf
     idbanco=request.POST["Banco_examen"]
+    cantidad=request.POST["cantPreguntas"]
     plantillas=Plantilla.objects.filter(id_banco=idbanco)
     #coger cantidad que decidamos de plantillas de manera al azar y guardarlas en una lista o diccionario
     #declarar un string que sea igual a "enunciado" de la plantilla
