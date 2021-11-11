@@ -31,19 +31,10 @@ urlpatterns = [
     path('crearPlantilla/', crearPlantilla, name="crearPlantilla"),
     path('estudiantes/<Grupoid>', estudiantes),
     path('crearExamen/', crearExamen),
-<<<<<<< HEAD
-    path('erroneas/<dni>', setIncorrectas, name="setIncorrectas"),
-    path('variacion/<dni>', verVar, name="verVar"),
-    path('setVariacion/', setVariacion, name="setVariacion"),
-    path('accounts/',include('django.contrib.auth.urls')),
-    path('crearEstudiantes/<idcurso>',crearEstudiante, name="crearEstudiante"),
-    path('listaerroneas/<plantillaid>',verIncorrectas, name="listaerroneas"),
-=======
     path('listaerroneas/<plantillaid>', verIncorrectas, name="listaerroneas"),
     path('variacion/<dni>', verVar, name="verVar"),
     path('setVariacion/', setVariacion, name="setVariacion"),
     path('accounts/',include('django.contrib.auth.urls')),
     path('crearEstudiantes/',crearEstudiante, name="crearEstudiante"),
     path('erroneas/',setIncorrectas, name="crearIncorrectas"),
->>>>>>> master
 ]

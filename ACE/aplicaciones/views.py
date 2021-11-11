@@ -132,13 +132,8 @@ def setIncorrectas(request, dni):
         newInc5.save()
         newInc6.save()
         newInc7.save()
-<<<<<<< HEAD
-        plantillaid= plantilla.getdni()
-        return redirect('/plantillas/') 
-=======
 
         return redirect('/plantillas/'+bancoid) 
->>>>>>> master
     else:
        return render(request, 'setIncorrectas.html') 
 
