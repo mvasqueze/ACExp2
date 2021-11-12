@@ -7,6 +7,7 @@
         {% csrf_token %}
         <p> Banco con el que vas a hacer el examen: <input type="text" name="Banco_examen"/></p>
         <p> ¿Cuántas preguntas desea hacer?: <input type="number" name="cantPreguntas"/></p>
+        <input type="hidden" name="grupoid" value="{{data.grupoid}}" />
         <button type="submit" onclick="return confirm('¿Seguro que vas a crear examen para este grupo en el banco que ingresaste?');" class="submit-delete">Crear Examen</button>
 
     </form>

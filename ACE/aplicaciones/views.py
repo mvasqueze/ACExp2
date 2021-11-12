@@ -4,6 +4,12 @@ from aplicaciones.models import Banco_preguntas
 from aplicaciones.models import Curso, Grupos
 from aplicaciones.models import Incorrecta, Plantilla, Correcta
 from reportlab.pdfgen import canvas
+from django.http import FileResponse, response
+import zipfile
+from django.http import HttpResponse
+from reportlab.lib.units import inch
+import random
+
 # Create your views here.
 def inicio(request):
     return render(request, 'Inicio.html')
@@ -224,11 +230,30 @@ def verExamen(request,idcurso):
     data["idcurso"]=idcurso
     return render(request, 'crearExamenes.html',{"data":data})
 
-def crearExamen(request):
+def crearExamen(request, grupoid):
     #añadir lo del pdf
+    responseZ = HttpResponse(content_type='application/zip')
+    zf=zipfile.ZipFile(responseZ, 'w')
+    data={}
+    data["grupoid"]=grupoid
+    estudiante_lista=Grupo_estudiantes.objects.filter(id_grupo=grupoid)
     idbanco=request.POST["Banco_examen"]
     cantidad=request.POST["cantPreguntas"]
     plantillas=Plantilla.objects.filter(id_banco=idbanco)
+    responseP= HttpResponse(content_type='application/pdf')
+    responseP['Content-Disposition']='attachment; filename=solucionario.pdf'
+    solucionario=canvas.Canvas(responseP)
+    for i in range(len(estudiante_lista)):
+        responseE= HttpResponse(content_type='application/pdf')
+        filename=estudiante_lista[i].nombre+'.pdf'
+        responseE['Content-Disposition']='attachment; filename="{}"'.format(filename)
+        examen=canvas.Canvas(responseE)
+        solucionario.setFont("Times-Roman", 11)
+        examen.setFont("Times-Roman", 11)
+        solucionario.drawString(0,2.5*inch , estudiante_lista[i].nombre)
+        examen.drawString(0,2.5*inch , estudiante_lista[i].nombre)
+
+    solucionario.save()
     #coger cantidad que decidamos de plantillas de manera al azar y guardarlas en una lista o diccionario
     #declarar un string que sea igual a "enunciado" de la plantilla
     #conseguir una opcion de la plantilla de manera al azar (recomendacion pedir todas las relacionadas con la plantilla que se esta trabajando y usar un metodo que coja una al azar)
@@ -245,3 +270,22 @@ def crearExamen(request):
     #repetir con todos los estudiantes del grupo seleccionado
     return(redirect)
     
+
+def autoExam(request, banco, cantidad):
+    plant_lista= Plantilla.objects.filter(id_banco=banco)
+    #lista_Incorrectas=Incorrecta.objects.filter(id_pregunta=plant_lista.dni)
+    #listPID=[]
+    #for i in range(len(plant_lista)):
+    #   listPID.append(plant_lista[i].dni)
+    
+    imp=""
+    i=0
+    while i<cantidad:
+        sol=""
+        n=random.randint(0, len(plant_lista))
+        enun=plant_lista[n]
+        list_variacion=Correcta.objects.filter(id_pregunta=plant_lista[n].dni)
+        ranVar=random.randint(0, len(list_variacion))
+        variacion=list_variacion[ranVar]
+        sol=enun.enunciado.replace('///', variacion.enunciado)+'\n'+variacion.respuesta
+
