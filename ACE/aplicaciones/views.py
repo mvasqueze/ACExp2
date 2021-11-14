@@ -5,9 +5,11 @@ from aplicaciones.models import Curso, Grupos
 from aplicaciones.models import Incorrecta, Plantilla, Correcta
 from reportlab.pdfgen import canvas
 from django.http import FileResponse, response
+import io
 import zipfile
 from django.http import HttpResponse
 from reportlab.lib.units import inch
+from reportlab.lib.pagesizes import letter
 import random
 
 # Create your views here.
@@ -146,7 +148,7 @@ def verIncorrectas(request, plantillaid):
     return render(request,'setIncorrectas.html',{"data":data})
 
 
-def setIncorrectas(request, dni):
+def setIncorrectas(request):
     if request.method=="POST":
         plantilla=Plantilla.objects.get(dni=request.POST["plantillaid"])
         banco=plantilla.getid_banco()
@@ -225,35 +227,60 @@ def crearEstudiante(request):
     else:
         return render(request, 'estudiantes.html')
 
-def verExamen(request,idcurso):
+def verExamen(request,idgrupo):
     data={}
-    data["idcurso"]=idcurso
+    data["idgrupo"]=idgrupo
     return render(request, 'crearExamenes.html',{"data":data})
 
-def crearExamen(request, grupoid):
-    #añadir lo del pdf
+def crearExamen(request):
+    #Creacion zip
     responseZ = HttpResponse(content_type='application/zip')
     zf=zipfile.ZipFile(responseZ, 'w')
-    data={}
-    data["grupoid"]=grupoid
+    #Llamados varios
+    grupoid=request.POST["grupoid"]
     estudiante_lista=Grupo_estudiantes.objects.filter(id_grupo=grupoid)
-    idbanco=request.POST["Banco_examen"]
+    nombre_banco=request.POST["Banco_examen"]
+    banco=Banco_preguntas.objects.get(nombre=nombre_banco)
+    idbanco=banco.getdni()
     cantidad=request.POST["cantPreguntas"]
-    plantillas=Plantilla.objects.filter(id_banco=idbanco)
+    #pdf solucionario
     responseP= HttpResponse(content_type='application/pdf')
     responseP['Content-Disposition']='attachment; filename=solucionario.pdf'
     solucionario=canvas.Canvas(responseP)
+    #pdf lista de estudiantes
+    #buf=io.BytesIO()
+    responseL= HttpResponse(content_type='application/pdf')
+    responseL['Content-Disposition']='attachment; filename=listaEstudiantes.pdf'
+    listaE=canvas.Canvas(responseL, pagesize=letter, bottomup=0)
+    textobL=listaE.beginText()
+    textobL.setTextOrigin(inch, inch)
+    textobL.setFont("Times-Roman", 11)
+    #Lista auxiliar de la lista de estudiantes
+    listaEstudiantes=[]
+    for i in range(len(estudiante_lista)):
+        nombreEid= "Nombre:" + estudiante_lista[i].nombre_estudiante + "  id:" + estudiante_lista[i].id_estudiante
+        listaEstudiantes.append(nombreEid)
+    for line in listaEstudiantes:
+        textobL.textLine(line)
+    listaE.drawText(textobL)
+    #loop de la creacion de examanes para cada estudiante
     for i in range(len(estudiante_lista)):
         responseE= HttpResponse(content_type='application/pdf')
-        filename=estudiante_lista[i].nombre+'.pdf'
+        filename=estudiante_lista[i].nombre_estudiante+'.pdf'
         responseE['Content-Disposition']='attachment; filename="{}"'.format(filename)
         examen=canvas.Canvas(responseE)
         solucionario.setFont("Times-Roman", 11)
         examen.setFont("Times-Roman", 11)
-        solucionario.drawString(0,2.5*inch , estudiante_lista[i].nombre)
-        examen.drawString(0,2.5*inch , estudiante_lista[i].nombre)
-
+        solucionario.drawString(0,2.5*inch , listaEstudiantes[i])
+        examen.drawString(0,2.5*inch , listaEstudiantes[i])
+        aux=autoExam(idbanco, cantidad)
+        examen.drawString(0,2.5*inch , aux.values())
+        solucionario.drawString(0,2.5*inch , aux.keys())
+        examen.save()
+        zf.writestr(examen)
     solucionario.save()
+    zf.writestr(solucionario, listaE)
+    responseZ['Content-Disposition']=f'attachment; filename="Examenes.zip"'
     #coger cantidad que decidamos de plantillas de manera al azar y guardarlas en una lista o diccionario
     #declarar un string que sea igual a "enunciado" de la plantilla
     #conseguir una opcion de la plantilla de manera al azar (recomendacion pedir todas las relacionadas con la plantilla que se esta trabajando y usar un metodo que coja una al azar)
@@ -268,24 +295,44 @@ def crearExamen(request, grupoid):
     #añadir de forma aletoria las incorrectas y las correctas de la pregunta
     #repetir con las demas plantillas
     #repetir con todos los estudiantes del grupo seleccionado
-    return(redirect)
+    return(responseZ)
     
 
-def autoExam(request, banco, cantidad):
+def autoExam(banco, cantidad):
     plant_lista= Plantilla.objects.filter(id_banco=banco)
     #lista_Incorrectas=Incorrecta.objects.filter(id_pregunta=plant_lista.dni)
-    #listPID=[]
-    #for i in range(len(plant_lista)):
-    #   listPID.append(plant_lista[i].dni)
     
-    imp=""
+    imp={}
+    listaSol=[]
+    listaPreg=[]
     i=0
-    while i<cantidad:
+    while i< int(cantidad):
+        #sol es el string del solucionario
         sol=""
-        n=random.randint(0, len(plant_lista))
+        #numero aleatorio para sacar una plantilla
+        n=random.randint(0, len(plant_lista)-1)
         enun=plant_lista[n]
+        #lista de variaciones
         list_variacion=Correcta.objects.filter(id_pregunta=plant_lista[n].dni)
-        ranVar=random.randint(0, len(list_variacion))
+        #lista de incorrectas
+        listPID=[]
+        aux1=Incorrecta.objects.filter(id=plant_lista[n].dni)
+        for j in range(len(aux1)):
+            aux2=aux1[j].respuesta_equivocada
+            listPID.append(aux2)
+        ranVar=random.randint(0, len(list_variacion)-1)
         variacion=list_variacion[ranVar]
         sol=enun.enunciado.replace('///', variacion.enunciado)+'\n'+variacion.respuesta
-
+        random.shuffle(listPID)
+        listaResp=[variacion.respuesta]
+        for resp in listPID:
+            listaResp.append(resp)
+        aux=0
+        while aux>3:
+            listaResp.append(listPID[aux])
+            aux=aux+1
+        pregunta= str(i) + ') ' + enun.enunciado.replace('///', variacion.enunciado) + '\n' + listaResp[0] + '\n' + listaResp[1] + '\n' + listaResp[2] + '\n' + listaResp[3] + '\n'
+        listaSol.append(sol)
+        listaPreg.append(pregunta)
+    imp.update({listaSol:listaPreg})
+    return imp

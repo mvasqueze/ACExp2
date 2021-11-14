@@ -30,7 +30,7 @@ urlpatterns = [
     path('plantillas/<dni>', verPlantilla, name = "plantillas"),
     path('crearPlantilla/', crearPlantilla, name="crearPlantilla"),
     path('estudiantes/<Grupoid>', estudiantes),
-    path('verExamen/<idcurso>', verExamen, name="verExamen"),
+    path('crearExamen/<idgrupo>', verExamen, name="verExamen"),
     path('listaerroneas/<plantillaid>', verIncorrectas, name="listaerroneas"),
     path('variacion/<dni>', verVar, name="verVar"),
     path('setVariacion/', setVariacion, name="setVariacion"),
@@ -42,5 +42,5 @@ urlpatterns = [
     path('curso/deletegrupo/',deletegrupo,name="deletegrupo"),
     path('curso/deleteplantilla/',deleteplantilla,name="deleteplantilla"),
     path('curso/deleteestudiante/',deleteestudiante,name="deleteestudiante"),
-    path('crearExamen/', crearExamen, name="crearExamen"),
+    path('verExamen/', crearExamen, name="crearExamen"),
 ]
