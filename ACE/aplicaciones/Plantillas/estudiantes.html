@@ -28,6 +28,8 @@
             {% csrf_token %}
             <input type="hidden" name="Grupo" value="{{data.Grupoid}}" />
             <p> Identificacion del Estudiante a borrar: <input type="text" name="Estudiante_ID_borrar"/></p>
-            <button type="submit" onclick="return confirm('¿Estas seguro que quieres eliminar el estudiante?');" class="submit-delete">Borrar estudiante</button>
+            <button type="submit" onclick="return confirm('¿Estas seguro que quieres eliminar el estudiante?');" class="submit-delete">Borrar estudiante</button>            
         </form>
+        <h3> <a href="/grupos/{{data.CursoId}}"> <b>Volver al grupo </b>  </p> </a> </h3>
+        <h3> <a href="/cursos/"> <b>Volver al curso </b>  </p> </a> </h3>
 {% endblock %}

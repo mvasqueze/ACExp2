@@ -20,11 +20,8 @@ def crearCurso(request):
         newCurso= Curso()
         newCurso.setNombre(request.POST['Curso'])
         newCurso.setDNI(request.POST['idCurso'])
-        
         newCurso.save()
-        if request.POST.get("CrearU"):
-            return redirect('/cursos/')
-        return redirect('/crearCurso/')
+        return redirect('/cursos/')
     else:
         return render(request, 'CrearCurso.html')
 
@@ -133,14 +130,22 @@ def crearPlantilla(request):
 
 def verPlantilla(request, dni):
     plant_lista= Plantilla.objects.filter(id_banco=dni)
+    banco=Banco_preguntas.objects.get(dni=dni)
+    curso=banco.getid_curso()
+    idcurso=curso.getDNI()
     data={}
     data["plant_lista"]=plant_lista
     data["banco"]=dni
+    data["idcurso"]=idcurso
     return render(request, 'plantillas.html',{"data":data})
 
 
 def verIncorrectas(request, plantillaid):
     data={}
+    plantilla=Plantilla.objects.get(dni=plantillaid)
+    banco=plantilla.getid_banco()
+    idbanco=banco.getdni()
+    data["idbanco"]=idbanco
     data["plantillaid"]=plantillaid
     lista_Incorrectas=Incorrecta.objects.filter(id_pregunta=plantillaid)
     data["lista_Incorrectas"]=lista_Incorrectas
@@ -202,6 +207,10 @@ def setVariacion(request):
 def verVar(request, dni):
     var_lista=Correcta.objects.filter(id_pregunta=dni)
     data={}
+    plantilla=Plantilla.objects.get(dni=dni)
+    banco=plantilla.getid_banco()
+    idbanco=banco.getdni()
+    data["idbanco"]=idbanco
     data["lista_correctas"]=var_lista
     data["id_pregunta"]=dni
     return render(request, 'setVariacion.html',{"data":data})
@@ -211,6 +220,12 @@ def estudiantes(request,Grupoid):
     data["Grupoid"]=Grupoid
     estudiante_lista=Grupo_estudiantes.objects.filter(id_grupo=Grupoid)
     data["estudiante_lista"]=estudiante_lista
+    grupo=Grupos.objects.get(dni=Grupoid)
+    Ngrupo=grupo.getNombre()
+    data["Ngrupo"]=Ngrupo
+    curso=grupo.getCurso()
+    idcurso=curso.getDNI()
+    data["CursoId"]=idcurso
     return render(request, 'estudiantes.html', {'data': data })
 
 def crearEstudiante(request):
@@ -230,6 +245,9 @@ def verExamen(request,idgrupo):
     data={}
     data["idgrupo"]=idgrupo
     return render(request, 'crearExamenes.html',{"data":data})
+
+    
+
 
 def crearExamen(request):
     #Creacion zip
@@ -372,3 +390,4 @@ def autoExam(banco, cantidad, usado):
     imp.append(listaSol)
     imp.append(listaPreg)
     return imp
+

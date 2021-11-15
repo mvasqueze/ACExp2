@@ -19,12 +19,12 @@
                 <p> Nombre del grupo: <input type="text" name="grupo"/></p>
                 <input type="hidden" name="cursoid" value="{{data.curso}}" />
             </div>
-          </form>
         </form>
         <form method="POST" action="{%url 'deleteCurso'%} ">
             {% csrf_token %}
             <input type="hidden" name="cursoidborrar" value="{{data.curso}}" />
             <button type="submit" onclick="return confirm('¿Estas seguro que quieres eliminar el curso?');" class="submit-delete">Borrar Curso al que pertenece</button>
         </form>
+        <h3> <a href="/cursos/"> <b>Volver al curso </b>  </p> </a> </h3>
     </body>
 </html>
