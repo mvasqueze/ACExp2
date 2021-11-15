@@ -234,8 +234,8 @@ def verExamen(request,idgrupo):
 
 def crearExamen(request):
     #Creacion zip
-    responseZ = HttpResponse(content_type='application/zip')
-    zf=zipfile.ZipFile(responseZ, 'w')
+    buff=io.BytesIO()
+    zf=zipfile.ZipFile(buff, 'w', zipfile.ZIP_DEFLATED)
     #Llamados varios
     grupoid=request.POST["grupoid"]
     estudiante_lista=Grupo_estudiantes.objects.filter(id_grupo=grupoid)
@@ -244,14 +244,16 @@ def crearExamen(request):
     idbanco=banco.getdni()
     cantidad=request.POST["cantPreguntas"]
     #pdf solucionario
-    responseP= HttpResponse(content_type='application/pdf')
-    responseP['Content-Disposition']='attachment; filename=solucionario.pdf'
-    solucionario=canvas.Canvas(responseP)
+    buffer=io.BytesIO()
+    solucionario=canvas.Canvas(buffer, pagesize=letter, bottomup=0)
+    textobP=solucionario.beginText()
+    textobP.setTextOrigin(inch, inch)
+    textobP.setFont("Times-Roman", 11)
+
+
     #pdf lista de estudiantes
-    #buf=io.BytesIO()
-    responseL= HttpResponse(content_type='application/pdf')
-    responseL['Content-Disposition']='attachment; filename=listaEstudiantes.pdf'
-    listaE=canvas.Canvas(responseL, pagesize=letter, bottomup=0)
+    buf=io.BytesIO()
+    listaE=canvas.Canvas(buf, pagesize=letter, bottomup=0)
     textobL=listaE.beginText()
     textobL.setTextOrigin(inch, inch)
     textobL.setFont("Times-Roman", 11)
@@ -263,38 +265,43 @@ def crearExamen(request):
     for line in listaEstudiantes:
         textobL.textLine(line)
     listaE.drawText(textobL)
+    listaE.save()
+    pdfE=buf.getvalue()
+
     #loop de la creacion de examanes para cada estudiante
     for i in range(len(estudiante_lista)):
-        responseE= HttpResponse(content_type='application/pdf')
-        filename=estudiante_lista[i].nombre_estudiante+'.pdf'
-        responseE['Content-Disposition']='attachment; filename="{}"'.format(filename)
-        examen=canvas.Canvas(responseE)
-        solucionario.setFont("Times-Roman", 11)
-        examen.setFont("Times-Roman", 11)
-        solucionario.drawString(0,2.5*inch , listaEstudiantes[i])
-        examen.drawString(0,2.5*inch , listaEstudiantes[i])
+        #Inicio pdf de cada examen
+        buffr=io.BytesIO()
+        examen=canvas.Canvas(buffr, pagesize=letter, bottomup=0)
+        #textobj a añadir en cada examen
+        textobE=examen.beginText()
+        textobE.setTextOrigin(inch, inch)
+        textobE.setFont("Times-Roman", 11)
+        textobE.textLine(listaEstudiantes[i])
+        textobP.textLine(listaEstudiantes[i])
         aux=autoExam(idbanco, cantidad)
-        examen.drawString(0,2.5*inch , aux.values())
-        solucionario.drawString(0,2.5*inch , aux.keys())
+        #creacion de las lineas de texto para cada examen
+        preguntas=aux[1]
+        for line in preguntas:
+            textobE.textLine(line)
+        #creacion de las lineas de texto para el solucionario
+        respuestas=aux[0]
+        for line in respuestas:
+            textobP.textLine(line)
+        examen.drawText(textobE)
+        solucionario.drawText(textobP)
         examen.save()
-        zf.writestr(examen)
+        pdfEx=buffr.getvalue() #pdfExamen
+        #listaPdf.append(pdfEx)
+        zf.writestr(f'{listaEstudiantes[i]}.pdf', pdfEx)
     solucionario.save()
-    zf.writestr(solucionario, listaE)
+    pdfS=buffer.getvalue() #pdfSolucionario
+    zf.writestr("Solucionario.pdf", pdfS)
+    zf.writestr("ListaEstudiantes.pdf", pdfE)
+    zf.close()
+    buff.seek(0)
+    responseZ=FileResponse(buff.getvalue(), content_type='applicaion/zip')
     responseZ['Content-Disposition']=f'attachment; filename="Examenes.zip"'
-    #coger cantidad que decidamos de plantillas de manera al azar y guardarlas en una lista o diccionario
-    #declarar un string que sea igual a "enunciado" de la plantilla
-    #conseguir una opcion de la plantilla de manera al azar (recomendacion pedir todas las relacionadas con la plantilla que se esta trabajando y usar un metodo que coja una al azar)
-    #declarar un string que sea igual a "enunciado" de la opcion obtenida
-    #declarar un string que sea igual a "respuesta" de la opcion obtenida
-    #pedir la cantidad especifica de incorrectas que se van a usar
-    #pedir todas las incorrectas relacionadas con esa plantilla 
-    #almacenar la cantidad decidida de incorrectas elegidas al azar en una lista o diccionario
-    #crear un string que junte los dos enunciados 
-    #añadir el string de los dos enunciados +  la respuesta correcta en otro pdf
-    #añadir al pdf del examen el enunciado combinado
-    #añadir de forma aletoria las incorrectas y las correctas de la pregunta
-    #repetir con las demas plantillas
-    #repetir con todos los estudiantes del grupo seleccionado
     return(responseZ)
     
 
@@ -302,7 +309,7 @@ def autoExam(banco, cantidad):
     plant_lista= Plantilla.objects.filter(id_banco=banco)
     #lista_Incorrectas=Incorrecta.objects.filter(id_pregunta=plant_lista.dni)
     
-    imp={}
+    imp=[]
     listaSol=[]
     listaPreg=[]
     i=0
@@ -316,7 +323,7 @@ def autoExam(banco, cantidad):
         list_variacion=Correcta.objects.filter(id_pregunta=plant_lista[n].dni)
         #lista de incorrectas
         listPID=[]
-        aux1=Incorrecta.objects.filter(id=plant_lista[n].dni)
+        aux1=Incorrecta.objects.filter(id_pregunta=plant_lista[n].dni)
         for j in range(len(aux1)):
             aux2=aux1[j].respuesta_equivocada
             listPID.append(aux2)
@@ -334,5 +341,7 @@ def autoExam(banco, cantidad):
         pregunta= str(i) + ') ' + enun.enunciado.replace('///', variacion.enunciado) + '\n' + listaResp[0] + '\n' + listaResp[1] + '\n' + listaResp[2] + '\n' + listaResp[3] + '\n'
         listaSol.append(sol)
         listaPreg.append(pregunta)
-    imp.update({listaSol:listaPreg})
+        i=i+1
+    imp.append(listaSol)
+    imp.append(listaPreg)
     return imp
