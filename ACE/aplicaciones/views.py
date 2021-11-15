@@ -4,14 +4,13 @@ from aplicaciones.models import Banco_preguntas
 from aplicaciones.models import Curso, Grupos
 from aplicaciones.models import Incorrecta, Plantilla, Correcta
 from reportlab.pdfgen import canvas
-from django.http import FileResponse, response
+from django.http import FileResponse
 import io
-import zipfile
 from django.http import HttpResponse
 from reportlab.lib.units import inch
 from reportlab.lib.pagesizes import letter
+from reportlab.platypus import PageBreak, BaseDocTemplate
 import random
-
 # Create your views here.
 def inicio(request):
     return render(request, 'Inicio.html')
@@ -234,8 +233,9 @@ def verExamen(request,idgrupo):
 
 def crearExamen(request):
     #Creacion zip
-    buff=io.BytesIO()
-    zf=zipfile.ZipFile(buff, 'w', zipfile.ZIP_DEFLATED)
+    #buff=io.BytesIO()
+    #zf=zipfile.ZipFile(buff, 'w', zipfile.ZIP_DEFLATED)
+    
     #Llamados varios
     grupoid=request.POST["grupoid"]
     estudiante_lista=Grupo_estudiantes.objects.filter(id_grupo=grupoid)
@@ -243,69 +243,74 @@ def crearExamen(request):
     banco=Banco_preguntas.objects.get(nombre=nombre_banco)
     idbanco=banco.getdni()
     cantidad=request.POST["cantPreguntas"]
-    #pdf solucionario
+
+    #pdf
     buffer=io.BytesIO()
-    solucionario=canvas.Canvas(buffer, pagesize=letter, bottomup=0)
-    textobP=solucionario.beginText()
+    Examenes=canvas.Canvas(buffer, pagesize=letter, bottomup=0)
+    textobP=Examenes.beginText()
     textobP.setTextOrigin(inch, inch)
     textobP.setFont("Times-Roman", 11)
 
 
     #pdf lista de estudiantes
-    buf=io.BytesIO()
-    listaE=canvas.Canvas(buf, pagesize=letter, bottomup=0)
-    textobL=listaE.beginText()
+    #buf=io.BytesIO()
+    #listaE=canvas.Canvas(buf, pagesize=letter, bottomup=0)
+    textobL=Examenes.beginText()
     textobL.setTextOrigin(inch, inch)
     textobL.setFont("Times-Roman", 11)
+
     #Lista auxiliar de la lista de estudiantes
     listaEstudiantes=[]
     for i in range(len(estudiante_lista)):
-        nombreEid= "Nombre:" + estudiante_lista[i].nombre_estudiante + "  id:" + estudiante_lista[i].id_estudiante
+        nombreEid= "Nombre:" + str(estudiante_lista[i].nombre_estudiante) + "  id:" + str(estudiante_lista[i].id_estudiante)
         listaEstudiantes.append(nombreEid)
     for line in listaEstudiantes:
         textobL.textLine(line)
-    listaE.drawText(textobL)
-    listaE.save()
-    pdfE=buf.getvalue()
 
     #loop de la creacion de examanes para cada estudiante
     for i in range(len(estudiante_lista)):
+        usado=[]
         #Inicio pdf de cada examen
-        buffr=io.BytesIO()
-        examen=canvas.Canvas(buffr, pagesize=letter, bottomup=0)
+        #buffr=io.BytesIO()
+        #examen=canvas.Canvas(buffr, pagesize=letter, bottomup=0)
         #textobj a añadir en cada examen
-        textobE=examen.beginText()
+        textobE=Examenes.beginText()
         textobE.setTextOrigin(inch, inch)
         textobE.setFont("Times-Roman", 11)
         textobE.textLine(listaEstudiantes[i])
         textobP.textLine(listaEstudiantes[i])
-        aux=autoExam(idbanco, cantidad)
+        aux=autoExam(idbanco, cantidad, usado)
         #creacion de las lineas de texto para cada examen
         preguntas=aux[1]
         for line in preguntas:
             textobE.textLine(line)
+        preguntas.append(PageBreak())
         #creacion de las lineas de texto para el solucionario
         respuestas=aux[0]
         for line in respuestas:
             textobP.textLine(line)
-        examen.drawText(textobE)
-        solucionario.drawText(textobP)
-        examen.save()
-        pdfEx=buffr.getvalue() #pdfExamen
+        Examenes.drawText(textobE)
+        Examenes.showPage()
+        #pdfEx=buffr.getvalue() #pdfExamen
         #listaPdf.append(pdfEx)
-        zf.writestr(f'{listaEstudiantes[i]}.pdf', pdfEx)
-    solucionario.save()
-    pdfS=buffer.getvalue() #pdfSolucionario
-    zf.writestr("Solucionario.pdf", pdfS)
-    zf.writestr("ListaEstudiantes.pdf", pdfE)
-    zf.close()
-    buff.seek(0)
-    responseZ=FileResponse(buff.getvalue(), content_type='applicaion/zip')
-    responseZ['Content-Disposition']=f'attachment; filename="Examenes.zip"'
+        #zf.writestr(f'{listaEstudiantes[i]}.pdf', pdfEx)
+    Examenes.drawText(textobP)
+    Examenes.showPage()
+    Examenes.drawText(textobL)
+    Examenes.save()
+    
+    #pdfS=buffer.getvalue() #pdfSolucionario
+    #zf.writestr("Solucionario.pdf", pdfS)
+    #zf.writestr("ListaEstudiantes.pdf", pdfE)
+    #zf.close()
+    buffer.seek(0)
+
+    responseZ=FileResponse(buffer, content_type='applicaion/pdf')
+    responseZ['Content-Disposition']=f'attachment; filename="Examenes.pdf"'
     return(responseZ)
     
 
-def autoExam(banco, cantidad):
+def autoExam(banco, cantidad, usado):
     plant_lista= Plantilla.objects.filter(id_banco=banco)
     #lista_Incorrectas=Incorrecta.objects.filter(id_pregunta=plant_lista.dni)
     
@@ -327,9 +332,15 @@ def autoExam(banco, cantidad):
         for j in range(len(aux1)):
             aux2=aux1[j].respuesta_equivocada
             listPID.append(aux2)
-        ranVar=random.randint(0, len(list_variacion)-1)
-        variacion=list_variacion[ranVar]
-        sol=enun.enunciado.replace('///', variacion.enunciado)+'\n'+variacion.respuesta
+        aBool=False
+        while aBool == False:
+            ranVar=random.randint(0, len(list_variacion)-1)
+            variacion=list_variacion[ranVar]
+            if variacion not in usado:
+                usado.append(variacion)
+                aBool=True
+        sol=str(i) + ') ' + enun.enunciado.replace('///', variacion.enunciado)
+        solR=str(variacion.respuesta)
         random.shuffle(listPID)
         listaResp=[variacion.respuesta]
         for resp in listPID:
@@ -338,9 +349,25 @@ def autoExam(banco, cantidad):
         while aux>3:
             listaResp.append(listPID[aux])
             aux=aux+1
-        pregunta= str(i) + ') ' + enun.enunciado.replace('///', variacion.enunciado) + '\n' + listaResp[0] + '\n' + listaResp[1] + '\n' + listaResp[2] + '\n' + listaResp[3] + '\n'
+        pregunta= str(i) + ') ' + enun.enunciado.replace('///', variacion.enunciado) 
+        preguntaA='a)' + listaResp[0]
+        preguntaB='b)' + listaResp[1]
+        preguntaC='c)' + listaResp[2]
+        preguntaD='d)' + listaResp[3]
+        blank=''
+        listaSol.append(blank)
         listaSol.append(sol)
+        listaSol.append(solR)
+        listaSol.append(blank)
+        listaSol.append(blank)
+        listaPreg.append(blank)
         listaPreg.append(pregunta)
+        listaPreg.append(preguntaA)
+        listaPreg.append(preguntaB)
+        listaPreg.append(preguntaC)
+        listaPreg.append(preguntaD)
+        listaPreg.append(blank)
+        listaPreg.append(blank)
         i=i+1
     imp.append(listaSol)
     imp.append(listaPreg)
