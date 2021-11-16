@@ -12,9 +12,15 @@
         <h1>De cual curso quieres ver los bancos que tienes:</h1>
              {% for Curso in curso_lista %}
                <h3> <a href="/bancos/{{Curso.dni}}"> <b>Curso: </b> {{Curso.nombre}} {{Curso.dni}} </p> </a> </h3>
-             {% endfor %}            
-        <a href="/crearCurso/">
-            <input type="button" value="Crear curso(s)"/>
-        </a>
+             {% endfor %}
+        <h1>Curso a crear</h1>
+        <form method="POST" action="{%url 'crearCurso'%}">
+        {% csrf_token %}
+          <div class="form-group">
+              <p> Nombre del curso: <input type="text" name="Curso"/></p>
+              <p> ID del curso: <input type="text" name="idCurso">
+              <button type="submit" class="btn btn-primary">Submit</button>
+          </div>
+        </form>
     </body>
 </html>

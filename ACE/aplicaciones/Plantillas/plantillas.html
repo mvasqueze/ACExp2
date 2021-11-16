@@ -11,12 +11,18 @@
         <form  method="POST" action="{% url 'crearPlantilla' %}"> {% csrf_token %} 
     <div class="form-group">
         <p>Código de la plantilla:<input type="text" id="id_plant" name="id_plant"></p>
-        <p>Enunciado:<input type="text" id="enunciado" name="enunciado"></p>
+        <p>Enunciado (en la parte que desea que se genere automaticamente debe ingresar ///):<input type="text" id="enunciado" name="enunciado"></p>
         <input type="hidden" name="bancoid" value="{{data.banco}}" />
         <input type="submit" name="CrearU" value="Crear">
         <input type="submit" name="CrearV" value="Crear y añadir otra">
     </div>
-
 </form>
+<form method="POST" action="{%url 'deletebanco'%} ">
+    {% csrf_token %}
+    <input type="hidden" name="bancoid" value="{{data.banco}}" />
+    <button type="submit" onclick="return confirm('¿Estas seguro que quieres eliminar el curso?');" class="submit-delete">Borrar Banco al que pertenece</button>
+</form>
+<h3> <a href="/bancos/{{data.idcurso}}"> <b>Volver al banco </b>  </p> </a> </h3>
+<h3> <a href="/cursos/"> <b>Volver al curso </b>  </p> </a> </h3>
     </body>
 </html>

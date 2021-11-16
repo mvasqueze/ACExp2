@@ -6,8 +6,9 @@
                <h3> <a href="/listaerroneas/{{Incorrectas.dni}}"> <b>Incorrecta: </b> {{Incorrecta.nombre}} </p> </a> </h3>
              {% endfor %}
         <h1> Incorreta a crear </h1>
-        <h1>Crea las preguntas que aparecerán en las preguntas que crees a apartir de esta plantilla</h1>
-        <h2>Ten en cuenta que mientras más ingreses, mayor variedad tendrán tus preguntas</h2>
+        <h1>Crea las respuestas equivocadas que aparecerán en las preguntas que crees a apartir de esta plantilla</h1>
+        <h2>Ten en cuenta que mientras más ingreses, mayor variedad tendrán tus preguntas. </h2>
+        <h2><b>IMPORTANTE: </b> Si ya agregaste opciones incorrectas previamente, las que ingreses a continuación sobreescribirán las anteriores (las anteriores se van a borrar).</h2>
         <form  method="POST" action="{% url 'setIncorrectas' %}"> {% csrf_token %} 
         <input type="hidden" name="plantillaid" value="{{data.plantillaid}}" />
         <div>

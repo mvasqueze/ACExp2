@@ -3,47 +3,13 @@
 
     <h1>CREA TUS EXÁMENES</h1>
 
-    <div>
-        <label for="id_examen">Código del examen:</label>
-        <input type="number" id="id_examen" name="id_examen" min="0" max="9999">
-    </div>
+   <form method="POST" action="{%url 'crearExamen'%} ">
+        {% csrf_token %}
+        <p> Banco con el que vas a hacer el examen: <input type="text" name="Banco_examen"/></p>
+        <p> ¿Cuántas preguntas desea hacer?: <input type="number" name="cantPreguntas"/></p>
+        <input type="hidden" name="grupoid" value="{{data.idgrupo}}" />
+        <button type="submit" onclick="return confirm('¿Seguro que vas a crear examen para este grupo en el banco que ingresaste?');" class="submit-delete">Crear Examen</button>
 
-    <div>
-        <label for="cantPreg">Preguntas del examen:</label>
-        <input type="number" id="preguntas" name="preguntas" min="1" max="20">
-    </div>
+    </form>
 
-<!-- Lo siguiente se debe hacer para cada pregunta -->
-
-    <div>
-        <label for="id_pregunta">Código de la pregunta:</label>
-        <input type="number" id="id_pregunta" name="id_pregunta" min="0" max="9999">
-    </div>
-
-    <div>
-        <h3>Seleccione el banco de preguntas que va a usar</h3>
-        <label><input type="checkbox" id="cbox1" value="first_checkbox"> Banco 1</label><br>
-        <input type="checkbox" id="cbox2" value="second_checkbox"> <label for="cbox2"> Banco 2</label>
-        <!-- Se deben listar todos los bancos de este curso -->
-    </div>
-
-    <div>
-        <h3>Seleccione la plantilla que va a usar</h3>
-        <label><input type="checkbox" id="cbox1" value="first_checkbox"> Plantilla 1</label><br>
-        <input type="checkbox" id="cbox2" value="second_checkbox"> <label for="cbox2"> Plantilla 2</label>
-        <!-- Se deben listar todas las plantillas del banco seleccionado -->
-    </div>
-
-    <div>
-        <label for="puntaje_pregunta">Valor de la pregunta:</label>
-        <input type="number" id="puntaje_pregunta" name="puntaje_pregunta" min="0.1" max="5.0">
-    </div>
-
-    <div>
-        <label for="incorrectas">Cantidad de respuestas incorrectas:</label>
-        <input type="number" id="incorrectas" name="incorrectas" min="3" max="7">
-    </div>
-
-    
-    <input type="submit" value="Guardar">
 </html>
