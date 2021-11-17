@@ -316,6 +316,8 @@ def crearExamen(request):
     #listaE=canvas.Canvas(buf, pagesize=letter, bottomup=0)
     textobL=Examenes.beginText()
     textobL.setTextOrigin(inch, inch)
+    textobL.setFont("Helvetica-Bold", 15)
+    textobL.textLine("Listado de estudiantes en este curso")
     textobL.setFont("Times-Roman", 11)
 
     #Lista auxiliar de la lista de estudiantes

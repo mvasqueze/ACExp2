@@ -9,12 +9,12 @@
     <body>
         <h1>De cual curso quieres ver los grupos que tienes:</h1>
             {% for Curso in curso_lista %}
-               <h3> <a href="/grupos/{{Curso.dni}}"> <b>Curso: </b> {{Curso.nombre}} {{Curso.dni}} </p> </a> </h3>
+               <h3> <a href="/grupos/{{Curso.dni}}"> <b>Curso: </b> {{Curso.nombre}} </p> </a> </h3>
              {% endfor %}  
              
         <h1>De cual curso quieres ver los bancos que tienes:</h1>
              {% for Curso in curso_lista %}
-               <h3> <a href="/bancos/{{Curso.dni}}"> <b>Curso: </b> {{Curso.nombre}} {{Curso.dni}} </p> </a> </h3>
+               <h3> <a href="/bancos/{{Curso.dni}}"> <b>Curso: </b> {{Curso.nombre}} </p> </a> </h3>
              {% endfor %}
         <h1>Curso a crear</h1>
         <form method="POST" action="{%url 'crearCurso'%}">
