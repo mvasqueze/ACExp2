@@ -37,7 +37,7 @@ def crearGrupo(request):
         newGrupo.curso=curso
         newGrupo.setNombre(request.POST["grupo"])
         newGrupo.save()
-        return redirect('/grupos/'+idcurso)
+        return redirect('/grupos/'+str(idcurso))
     else:
         return render(request,'selecciongrupo.html')
     
@@ -47,6 +47,9 @@ def verGrupo(request, dni):
     data={}
     data["grupo_lista"]=grupo_lista
     data["curso"]=dni
+    curso=Curso.objects.get(dni=dni)
+    nombre_curso=curso.getNombre()
+    data["nombre_curso"]=nombre_curso
     return render(request, 'selecciongrupo.html',{"data":data})
 
 def crearBanco(request):
@@ -56,7 +59,7 @@ def crearBanco(request):
         newBanco.curso=curso
         newBanco.setnombre(request.POST["Banco"])
         newBanco.save()
-        return redirect('/bancos/'+request.POST["cursoid"])
+        return redirect('/bancos/'+str(request.POST["cursoid"]))
     else:
         return render(request, 'crearbanco.html')
 
@@ -75,7 +78,7 @@ def deletebanco(request):
     banco.delete()
     curso=banco.getid_curso()
     cursoid=curso.getDNI()
-    return redirect('/bancos/'+cursoid)
+    return redirect('/bancos/'+str(cursoid))
 
 def deletecurso(request):
     curso=Curso.objects.get(dni=request.POST["cursoidborrar"])
@@ -87,21 +90,21 @@ def deletegrupo(request):
     curso=grupo.getCurso()
     cursoid=curso.getDNI()
     grupo.delete()
-    return redirect('/grupos/'+cursoid)
+    return redirect('/grupos/'+str(cursoid))
 
 def deleteestudiante(request):
     grupo=request.POST["Grupo"]
     dniEstudiante=request.POST["Estudiante_ID_borrar"]
     estudiante=Grupo_estudiantes.objects.get(id_estudiante=dniEstudiante)
     estudiante.delete()
-    return redirect('/estudiantes/'+grupo)
+    return redirect('/estudiantes/'+str(grupo))
 
 def deletevariacion(request):
     grupo=request.POST["Grupo"]
     dniEstudiante=request.POST["Estudiante_ID_borrar"]
     estudiante=Grupo_estudiantes.objects.get(id_estudiante=dniEstudiante)
     estudiante.delete()
-    return redirect('/estudiantes/'+grupo)
+    return redirect('/estudiantes/'+str(grupo))
 
 def deleteplantilla(request):
     preguntaid=request.POST["preguntaid"]
@@ -109,7 +112,7 @@ def deleteplantilla(request):
     Banco=plantilla.getid_banco()
     idbanco=Banco.getdni()
     plantilla.delete()
-    return redirect('/plantillas/'+idbanco)
+    return redirect('/plantillas/'+str(idbanco))
 
 def crearPlantilla(request):
     if request.method == "POST":
@@ -120,9 +123,9 @@ def crearPlantilla(request):
         newPlant.save()
         #return redirect('/crearPlantilla/')
         if request.POST.get("CrearU"):
-            return redirect('/variacion/'+newPlant.getdni())
+            return redirect('/variacion/'+str(newPlant.getdni()))
         elif request.POST.get("CrearV"):
-            return redirect('/plantillas/'+request.POST["bancoid"])
+            return redirect('/plantillas/'+str(request.POST["bancoid"]))
         return render(request, 'plantillas.html',)
     else:
         #return render(request, 'crearPlantilla.html')
@@ -131,20 +134,31 @@ def crearPlantilla(request):
 def verPlantilla(request, dni):
     plant_lista= Plantilla.objects.filter(id_banco=dni)
     banco=Banco_preguntas.objects.get(dni=dni)
+    nombre_banco=banco.getnombre()
     curso=banco.getid_curso()
+    nombre_curso=curso.getNombre()
     idcurso=curso.getDNI()
     data={}
     data["plant_lista"]=plant_lista
     data["banco"]=dni
     data["idcurso"]=idcurso
+    data["nombre_curso"]=nombre_curso
+    data["nombre_banco"]=nombre_banco
     return render(request, 'plantillas.html',{"data":data})
 
 
 def verIncorrectas(request, plantillaid):
     data={}
     plantilla=Plantilla.objects.get(dni=plantillaid)
+    enunciado_plantilla=plantilla.getenunciado()
+    data["enunciado_plantilla"]=enunciado_plantilla
     banco=plantilla.getid_banco()
+    nombre_banco=banco.getnombre()
+    data["nombre_banco"]=nombre_banco
     idbanco=banco.getdni()
+    curso=banco.getid_curso()
+    nombre_curso=curso.getNombre()
+    data["nombre_curso"]=nombre_curso
     data["idbanco"]=idbanco
     data["plantillaid"]=plantillaid
     lista_Incorrectas=Incorrecta.objects.filter(id_pregunta=plantillaid)
@@ -166,25 +180,33 @@ def setIncorrectas(request):
         newInc3=Incorrecta()
         newInc3.id_pregunta=plantilla
         newInc3.setrespuesta_incorrecta(request.POST['opc3'])
-        newInc4=Incorrecta()
-        newInc4.id_pregunta=plantilla
-        newInc4.setrespuesta_incorrecta(request.POST['opc4'])
-        newInc5=Incorrecta()
-        newInc5.id_pregunta=plantilla
-        newInc5.setrespuesta_incorrecta(request.POST['opc5'])
-        newInc6=Incorrecta()
-        newInc6.id_pregunta=plantilla
-        newInc6.setrespuesta_incorrecta(request.POST['opc6'])
-        newInc7=Incorrecta()
-        newInc7.id_pregunta=plantilla
-        newInc7.setrespuesta_incorrecta(request.POST['opc7'])
+        if request.POST['opc4'] != '':
+            newInc4=Incorrecta()
+            newInc4.id_pregunta=plantilla
+            newInc4.setrespuesta_incorrecta(request.POST['opc4'])
+        if request.POST['opc5'] != '':
+            newInc5=Incorrecta()
+            newInc5.id_pregunta=plantilla
+            newInc5.setrespuesta_incorrecta(request.POST['opc5'])
+        if request.POST['opc6'] != '':
+            newInc6=Incorrecta()
+            newInc6.id_pregunta=plantilla
+            newInc6.setrespuesta_incorrecta(request.POST['opc6'])
+        if request.POST['opc7'] != '':
+            newInc7=Incorrecta()
+            newInc7.id_pregunta=plantilla
+            newInc7.setrespuesta_incorrecta(request.POST['opc7'])
         newInc1.save()
         newInc2.save()
         newInc3.save()
-        newInc4.save()
-        newInc5.save()
-        newInc6.save()
-        newInc7.save()
+        if request.POST['opc4'] != '':
+            newInc4.save()
+        if request.POST['opc5'] != '':
+            newInc5.save()
+        if request.POST['opc6'] != '':
+            newInc6.save()
+        if request.POST['opc7'] != '':
+            newInc7.save()
 
         return redirect('/plantillas/'+str(bancoid)) 
     else:
@@ -199,8 +221,8 @@ def setVariacion(request):
         correcta.setrespuesta(request.POST['respuesta'])
         correcta.save()
         if request.POST.get("crear1"):
-            return redirect('/listaerroneas/'+request.POST["preguntaid"])
-        return redirect('/variacion/'+request.POST["preguntaid"])
+            return redirect('/listaerroneas/'+str(request.POST["preguntaid"]))
+        return redirect('/variacion/'+str(request.POST["preguntaid"]))
     else:
         return render(request, 'setVariacion.html')
 
@@ -210,6 +232,14 @@ def verVar(request, dni):
     plantilla=Plantilla.objects.get(dni=dni)
     banco=plantilla.getid_banco()
     idbanco=banco.getdni()
+    plantilla=Plantilla.objects.get(dni=dni)
+    enunciado_plantilla=plantilla.getenunciado()
+    data["enunciado_plantilla"]=enunciado_plantilla
+    nombre_banco=banco.getnombre()
+    data["nombre_banco"]=nombre_banco
+    curso=banco.getid_curso()
+    nombre_curso=curso.getNombre()
+    data["nombre_curso"]=nombre_curso
     data["idbanco"]=idbanco
     data["lista_correctas"]=var_lista
     data["id_pregunta"]=dni
@@ -225,6 +255,8 @@ def estudiantes(request,Grupoid):
     data["Ngrupo"]=Ngrupo
     curso=grupo.getCurso()
     idcurso=curso.getDNI()
+    nombre_curso=curso.getNombre()
+    data["nombre_curso"]=nombre_curso
     data["CursoId"]=idcurso
     return render(request, 'estudiantes.html', {'data': data })
 
@@ -237,12 +269,22 @@ def crearEstudiante(request):
         newestudiante.setestudiante(request.POST["Estudiante"])
         newestudiante.setId_Estudiante(request.POST["Estudiante_ID"])
         newestudiante.save()
-        return redirect('/estudiantes/'+idgrupo)
+        return redirect('/estudiantes/'+str(idgrupo))
     else:
         return render(request, 'estudiantes.html')
 
 def verExamen(request,idgrupo):
     data={}
+    grupo=Grupos.objects.get(dni=idgrupo)
+    Ngrupo=grupo.getNombre()
+    data["Ngrupo"]=Ngrupo
+    curso=grupo.getCurso()
+    nombre_curso=curso.getNombre()
+    data["nombre_curso"]=nombre_curso
+    idcurso=curso.getDNI()
+    lista_bancos=Banco_preguntas.objects.filter(curso=idcurso)
+    data["lista_bancos"]=lista_bancos
+    data["CursoId"]=idcurso
     data["idgrupo"]=idgrupo
     return render(request, 'crearExamenes.html',{"data":data})
 
@@ -293,10 +335,10 @@ def crearExamen(request):
         #textobj a añadir en cada examen
         textobE=Examenes.beginText()
         textobE.setTextOrigin(inch, inch)
-        textobE.setFont("Times-Roman-Bold", 11)
-        textobP.setFont("Times-Roman-Bold", 11)
-        textobE.textLine(listaEstudiantes[i])
-        textobP.textLine(listaEstudiantes[i])
+        textobE.setFont("Helvetica-Bold", 15)
+        textobP.setFont("Helvetica-Bold", 15)
+        textobE.textLine(listaEstudiantes[i] + "      Curso: " + request.POST["nombre_curso"])
+        textobP.textLine(listaEstudiantes[i] + "      Curso: " + request.POST["nombre_curso"])
         textobE.setFont("Times-Roman", 11)
         textobP.setFont("Times-Roman", 11)
         aux=autoExam(idbanco, cantidad, usado)
@@ -371,12 +413,12 @@ def autoExam(banco, cantidad, usado):
             aux=aux+1
         random.shuffle(listaResp)
         pregunta= str(i+1) + ') ' + enun.enunciado.replace('///', variacion.enunciado) 
-        preguntaA='a)' + listaResp[0]
-        preguntaB='b)' + listaResp[1]
-        preguntaC='c)' + listaResp[2]
-        preguntaD='d)' + listaResp[3]
+        preguntaA='a) ' + listaResp[0]
+        preguntaB='b) ' + listaResp[1]
+        preguntaC='c) ' + listaResp[2]
+        preguntaD='d) ' + listaResp[3]
         blank=''
-        separacion="--------------------------------------------------------------------------------------------------------------------------------------"
+        separacion="------------------------------------------------------------------------------------------------------------------------------------------------"
         listaSol.append(blank)
         listaSol.append(sol)
         listaSol.append(solR)

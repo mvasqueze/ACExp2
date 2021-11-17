@@ -138,8 +138,8 @@ class Correcta (models.Model):
 
     
 class Incorrecta (models.Model):
-    id_pregunta=models.ForeignKey("Plantilla",null=False,blank=False, on_delete=models.CASCADE)
-    respuesta_equivocada=models.CharField(max_length=50)
+    id_pregunta=models.ForeignKey("Plantilla",null=False, on_delete=models.CASCADE)
+    respuesta_equivocada=models.CharField(max_length=50, blank=False, null=False)
     def getid_pregunta(self):
         return self.id_pregunta
 
@@ -148,3 +148,6 @@ class Incorrecta (models.Model):
 
     def setrespuesta_incorrecta(self, respuesta_incorrecta):
         self.respuesta_equivocada=respuesta_incorrecta
+
+#class Examenes (models.Model):
+#    banco=models.CharField(max_length=50, choices=Banco_preguntas)
