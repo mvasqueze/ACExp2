@@ -13,7 +13,6 @@
         <h1> Plantilla a crear </h1>
         <form  method="POST" action="{% url 'crearPlantilla' %}"> {% csrf_token %} 
     <div class="form-group">
-        <p>Código de la plantilla:<input type="text" id="id_plant" name="id_plant"></p>
         <p>Enunciado (en la parte que desea que se genere automaticamente debe ingresar ///):<input type="text" id="enunciado" name="enunciado"></p>
         <input type="hidden" name="bancoid" value="{{data.banco}}" />
         <input type="submit" name="CrearU" value="Crear">

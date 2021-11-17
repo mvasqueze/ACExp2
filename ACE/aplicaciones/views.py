@@ -19,7 +19,6 @@ def crearCurso(request):
     if request.method == "POST":
         newCurso= Curso()
         newCurso.setNombre(request.POST['Curso'])
-        newCurso.setDNI(request.POST['idCurso'])
         newCurso.save()
         return redirect('/cursos/')
     else:
@@ -56,7 +55,6 @@ def crearBanco(request):
         newBanco= Banco_preguntas()
         newBanco.curso=curso
         newBanco.setnombre(request.POST["Banco"])
-        newBanco.setdni(request.POST["idBanco"])
         newBanco.save()
         return redirect('/bancos/'+request.POST["cursoid"])
     else:
@@ -115,7 +113,6 @@ def crearPlantilla(request):
         banco= Banco_preguntas.objects.get(dni=request.POST["bancoid"])
         newPlant= Plantilla()
         newPlant.id_banco=banco
-        newPlant.setdni(request.POST['id_plant'])
         newPlant.setenunciado(request.POST['enunciado'])
         newPlant.save()
         #return redirect('/crearPlantilla/')

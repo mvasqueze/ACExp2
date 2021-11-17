@@ -7,7 +7,7 @@ from django.db.models.fields.related import ForeignKey
 
 
 class Curso(models.Model):
-    dni=models.CharField(max_length=10,primary_key=True)
+    dni=models.AutoField(primary_key=True)
     nombre = models.CharField(max_length=50)
     def __str__(self):
         texto = "Curso: {0}"
@@ -54,29 +54,9 @@ class Grupos(models.Model):
         self.curso = curso
 
 
-class Estudiante(models.Model):
-    dni=models.CharField(max_length=10,primary_key=True)
-    nombre = models.CharField(max_length=50)
-    
-    def __str__(self):
-        texto = "Estudiante: {0}"
-        return texto.format(self.nombre)
-    
-    def getDni(self):
-        return self.dni
-    
-    def getNombre(self):
-        return self.nombre
-
-    def setDni(self, dni):
-        self.dni = dni
-
-    def setNombre(self, nombre):
-        self.nombre = nombre
-
 
 class Grupo_estudiantes(models.Model):
-    dni=models.AutoField(max_length=10,primary_key=True)
+    dni=models.AutoField(primary_key=True)
     id_estudiante=models.CharField(max_length=10)
     nombre_estudiante=models.CharField(max_length=20)
     id_grupo=models.ForeignKey(Grupos, null=False, on_delete=CASCADE)
@@ -99,7 +79,7 @@ class Grupo_estudiantes(models.Model):
 
 
 class Banco_preguntas(models.Model):
-    dni=models.CharField(max_length=10,primary_key=True)
+    dni=models.AutoField(primary_key=True)
     nombre = models.CharField(max_length=50)
     curso= models.ForeignKey(Curso,null=False, on_delete=models.CASCADE)
     def __str__(self):
@@ -111,14 +91,12 @@ class Banco_preguntas(models.Model):
         return self.nombre
     def getid_curso(self):
         return self.curso
-    def setdni(self,dni):
-        self.dni=dni
     def setnombre(self,nombre):
         self.nombre=nombre 
 
 
 class Plantilla(models.Model):
-    dni=models.CharField(max_length=10,primary_key=True)
+    dni=models.AutoField(primary_key=True)
     id_banco=models.ForeignKey(Banco_preguntas,null=False, on_delete=models.CASCADE)
     enunciado=models.CharField(max_length=500)
 
@@ -129,17 +107,11 @@ class Plantilla(models.Model):
     def getdni(self):
         return self.dni
         
-
-        
     def getid_banco(self):
         return self.id_banco
         
     def getenunciado(self):
         return self.enunciado
-        
-    def setdni(self, dni):
-        self.dni=dni
-
 
     def setenunciado(self, enunciado):
         self.enunciado=enunciado
