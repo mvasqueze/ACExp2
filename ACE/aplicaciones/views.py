@@ -117,7 +117,7 @@ def crearPlantilla(request):
         newPlant.save()
         #return redirect('/crearPlantilla/')
         if request.POST.get("CrearU"):
-            return redirect('/variacion/'+request.POST["id_plant"])
+            return redirect('/variacion/'+newPlant.getdni())
         elif request.POST.get("CrearV"):
             return redirect('/plantillas/'+request.POST["bancoid"])
         return render(request, 'plantillas.html',)
@@ -183,7 +183,7 @@ def setIncorrectas(request):
         newInc6.save()
         newInc7.save()
 
-        return redirect('/plantillas/'+bancoid) 
+        return redirect('/plantillas/'+str(bancoid)) 
     else:
        return render(request, 'setIncorrectas.html') 
 
