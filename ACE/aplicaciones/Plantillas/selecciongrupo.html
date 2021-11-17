@@ -1,4 +1,7 @@
+{% extends 'layout.html' %}
+{% block content %}
 <!DOCTYPE html>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 <html>
     <head>
         <title> Selección grupo </title>
@@ -19,12 +22,13 @@
                 <p> Nombre del grupo: <input type="text" name="grupo"/></p>
                 <input type="hidden" name="cursoid" value="{{data.curso}}" />
             </div>
-          </form>
         </form>
         <form method="POST" action="{%url 'deleteCurso'%} ">
             {% csrf_token %}
             <input type="hidden" name="cursoidborrar" value="{{data.curso}}" />
             <button type="submit" onclick="return confirm('¿Estas seguro que quieres eliminar el curso?');" class="submit-delete">Borrar Curso al que pertenece</button>
         </form>
+        <h3> <a href="/cursos/"> <b>Volver al curso </b>  </p> </a> </h3>
     </body>
 </html>
+{% endblock %}

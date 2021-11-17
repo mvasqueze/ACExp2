@@ -1,0 +1,16 @@
+.font-bold{
+  font-weight: bold;
+}
+
+.font-300{
+  font-weight: 300;
+}
+
+.errors li{
+  color: red;
+}
+
+.submit-delete{
+  border: 0; 
+  background: none;
+}
